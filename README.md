@@ -1,5 +1,5 @@
 # HACKTHEBOX
- En este repositorio subire el analisis equipos HACKTHEBOX.
+ En este repositorio subire el analisis a equipos HACKTHEBOX.
 
 # Equipos analizados:
 
