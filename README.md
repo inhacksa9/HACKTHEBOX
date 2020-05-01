@@ -3,7 +3,7 @@
 
 # Equipos analizados:
 
-- Lame: 10.10.10.3 --> 2020-04-27-04.
+- Lame: 10.10.10.3 --> 2020-05-01.
 
 
 # Realizado por inhacksa9@gmail.com #
