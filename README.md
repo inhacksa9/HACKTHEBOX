@@ -3,10 +3,14 @@
 
 # Equipos analizados:
 
-- Lame: 10.10.10.3 --> 2020-05-01.
-- Legacy: 10.10.10.4 --> 2020-05-05.
-- Devel: 10.10.10.5 --> 2020-05-12.
-- Popcorn: 10.10.10.6 --> 2020-05-19.
+- Lame: 10.10.10.3     
+- Legacy: 10.10.10.4   
+- Devel: 10.10.10.5    
+- Popcorn: 10.10.10.6  
+- Beep: 10.10.10.7     
+- Optimum 10.10.10.8   
+- Bastard 10.10.10.9
+- Tenten 10.10.10.10
 
 
 # Realizado por inhacksa9@gmail.com #
